@@ -13,14 +13,21 @@ function SearchPage() {
     if (keywords && keywords[0] === '') {
         keywords = undefined;
     }
-    const actions = fetchActionsByNames(keywords)
-
+    const actions = fetchActionsByNames(keywords);
+    const resultP = keywords ?
+        (
+            <p>{
+                actions.length === 0 ?
+                    (`Nenhum resultado para: ${keywords?.join(' ')}`) :
+                    (`Resultado${actions.length > 1 ?
+                        's' :
+                        ''} para: ${keywords?.join(' ')}`)
+            }</p>
+        ) :
+        null;
     return (
         <div>
-            {keywords ?
-                (<p>Resultado{actions.length > 1 ? 's' : ''} para: {keywords.join(' ')}</p>)
-                : null
-            }
+            {resultP}
             <ActionList actions={actions} />
         </div>
     );
