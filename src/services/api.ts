@@ -1,26 +1,37 @@
+import { Set } from 'immutable';
+
 import ActionModel from '../models/ActionModel';
 import allActions from './ActionList';
 
+function normalizeString(str: string) {
+    return str
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toUpperCase();
+}
+
+function compareActions(a: ActionModel, b: ActionModel): number {
+    return ((a.title < b.title) ||
+        ((a.title === b.title) && a.category <= b.category)) ? -1 : 1;
+}
+
 export function fetchActionsByNames(
-    titlesCategories: string[] = []
+    titlesCategories: Set<string> = Set(),
+    mustHaveCats: Set<string> = Set(),
 ): ActionModel[] {
-    if (titlesCategories.length === 0) {
-        return allActions.slice();
-    } else {
-        return allActions.filter(action => {
-            for (const tc of titlesCategories) {
-                const cleanTc = tc
-                    .normalize("NFD")
-                    .replace(/[\u0300-\u036f]/g, "")
-                    .toUpperCase();
-                if (action.title.toUpperCase().includes(cleanTc) ||
-                    action.category.toUpperCase().includes(cleanTc)) {
-                    return true;
-                }
-            }
-            return false;
-        });
-    }
+    const cleanTcs = titlesCategories.map(tc => normalizeString(tc));
+    const cleanMHC = mustHaveCats.map(cat => normalizeString(cat));
+    return allActions.filter(action => {
+        const cleanActionTitle = normalizeString(action.title);
+        const cleanActionCat = normalizeString(action.category);
+
+        let containsMHC = cleanMHC.size === 0 ||
+            cleanMHC.find(cat => cleanActionCat.includes(cat));
+        let containsTc = cleanTcs.size === 0 ||
+            cleanTcs.find(tc => cleanActionTitle.includes(tc));
+
+        return containsTc && containsMHC;
+    }).sort(compareActions);
 }
 
 export function fetchActionsByIds(ids: number[]): ActionModel[] {

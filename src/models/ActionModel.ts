@@ -8,6 +8,8 @@ interface ActionModel {
     capacity: number
 };
 
+export type TCategory = { [s: string]: string }
+
 export enum Category {
     WebinarOnline = "Webinar Online",
     PalestraPresencial = "Palestra Presencial",
