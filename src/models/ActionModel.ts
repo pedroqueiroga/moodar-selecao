@@ -7,9 +7,9 @@ interface ActionModel {
 };
 
 export enum Category {
-    WebinarOnline = "webinar online",
-    PalestraPresencial = "palestra presencial",
-    Treinamento = "treinamento"
+    WebinarOnline = "Webinar Online",
+    PalestraPresencial = "Palestra Presencial",
+    Treinamento = "Treinamento"
 }
 
 export default ActionModel;
