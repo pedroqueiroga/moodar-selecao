@@ -9,8 +9,12 @@ export function fetchActions(
     } else {
         return allActions.filter(action => {
             for (const tc of titlesCategories) {
-                if (action.title.toUpperCase().includes(tc.toUpperCase()) ||
-                    action.category.toUpperCase().includes(tc.toUpperCase())) {
+                const cleanTc = tc
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .toUpperCase();
+                if (action.title.toUpperCase().includes(cleanTc) ||
+                    action.category.toUpperCase().includes(cleanTc)) {
                     return true;
                 }
             }
