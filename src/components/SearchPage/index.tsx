@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
+import Actions from '../Actions';
 import { fetchActions } from '../../services/api';
 
 function useQuery() {
@@ -12,9 +13,7 @@ function SearchPage() {
     const actions = fetchActions(query?.replace(/ +/g, " ").split(' '));
     return (
         <div>
-            <ul>
-                {actions.map((a, i) => <li key={i}>{JSON.stringify(a)}</li>)}
-            </ul>
+            <Actions actions={actions} />
         </div>
     );
 }
