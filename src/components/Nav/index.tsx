@@ -12,7 +12,7 @@ function Nav({ history }: { history: History }) {
 
     const handleKeyUp = (e: React.KeyboardEvent) => {
         if (e.keyCode === 13) {
-            history.push(`/search/?q=${keywords.trim()}`);
+            history.push(`/search?q=${keywords.trim()}`);
         }
     }
 
