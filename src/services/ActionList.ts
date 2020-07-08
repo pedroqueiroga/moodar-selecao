@@ -4,28 +4,36 @@ const loremIpsum = 'Aliquam congue ligula sit amet metus fringilla, eget pellent
 
 const allActions: ActionModel[] = [
     {
+        id: 1,
         title: 'Como lidar com a Covid',
+        slug: 'como-lidar-com-covid',
         description: loremIpsum,
         category: Category.WebinarOnline,
         duration: 120,
         capacity: 10
     },
     {
+        id: 2,
         title: 'Gestão e liderança',
+        slug: 'gestao-e-lideranca',
         description: loremIpsum,
         category: Category.Treinamento,
         duration: 600,
         capacity: 25
     },
     {
+        id: 3,
         title: 'Auto-cuidado emocional',
+        slug: 'auto-cuidado-emocional',
         description: loremIpsum,
         category: Category.PalestraPresencial,
         duration: 90,
         capacity: 100
     },
     {
+        id: 4,
         title: 'Worklife balance',
+        slug: 'worklife-balance',
         description: loremIpsum,
         category: Category.PalestraPresencial,
         duration: 60,

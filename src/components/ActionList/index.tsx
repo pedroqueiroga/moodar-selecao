@@ -8,7 +8,7 @@ type ActionListProps = { actions: ActionModel[] };
 function ActionList({ actions }: ActionListProps) {
     return (
         <ul>
-            {actions.map((a, i) => <li key={i}><ActionItem action={a} /></li>)}
+            {actions.map((a) => <li key={a.id}><ActionItem action={a} /></li>)}
         </ul>
     );
 }

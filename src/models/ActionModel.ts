@@ -1,5 +1,7 @@
 interface ActionModel {
+    id: number,
     title: string,
+    slug: string,
     description: string,
     category: Category,
     duration: number,
