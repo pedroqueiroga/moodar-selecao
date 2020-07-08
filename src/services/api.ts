@@ -22,3 +22,11 @@ export function fetchActions(
         });
     }
 }
+
+export function fetchAction(id: number): ActionModel {
+    const action = allActions.find(action => id === action.id);
+    if (!action) {
+        throw new Error('invalid id');
+    }
+    return action;
+}
