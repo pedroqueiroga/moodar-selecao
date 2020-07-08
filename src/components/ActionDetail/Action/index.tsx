@@ -14,12 +14,10 @@ function Action({ action }: ActionProp) {
     const onClickHandler = () => {
         if (isRequested) {
             // cancel
-            dispatch({
-                actions: [...state.actions].filter(id => id !== action.id)
-            });
+            dispatch({ actions: state.actions.delete(action.id) });
         } else {
             // request
-            dispatch({ actions: [...state.actions, action.id] });
+            dispatch({ actions: state.actions.add(action.id) });
         }
     };
 

@@ -1,4 +1,4 @@
-import { Set } from 'immutable';
+import { Set, List } from 'immutable';
 
 import ActionModel from '../models/ActionModel';
 import allActions from './ActionList';
@@ -18,23 +18,23 @@ function compareActions(a: ActionModel, b: ActionModel): number {
 export function fetchActionsByNames(
     titlesCategories: Set<string> = Set(),
     mustHaveCats: Set<string> = Set(),
-): ActionModel[] {
+): List<ActionModel> {
     const cleanTcs = titlesCategories.map(tc => normalizeString(tc));
     const cleanMHC = mustHaveCats.map(cat => normalizeString(cat));
     return allActions.filter(action => {
         const cleanActionTitle = normalizeString(action.title);
         const cleanActionCat = normalizeString(action.category);
 
-        let containsMHC = cleanMHC.size === 0 ||
+        const containsMHC = cleanMHC.size === 0 ||
             cleanMHC.find(cat => cleanActionCat.includes(cat));
-        let containsTc = cleanTcs.size === 0 ||
+        const containsTc = cleanTcs.size === 0 ||
             cleanTcs.find(tc => cleanActionTitle.includes(tc));
 
         return containsTc && containsMHC;
     }).sort(compareActions);
 }
 
-export function fetchActionsByIds(ids: number[]): ActionModel[] {
+export function fetchActionsByIds(ids: Set<number>): List<ActionModel> {
     return allActions.filter(action => ids.includes(action.id));
 }
 

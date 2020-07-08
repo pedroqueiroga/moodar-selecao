@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useReducer, Context, ReactNode } from 'react';
+import { Set } from 'immutable';
 
-export type TActionsState = { actions: number[] } // store the id only
-export const actionsInitialState: TActionsState = { actions: [] };
+export type TActionsState = { actions: Set<number> } // store the id only
+export const actionsInitialState: TActionsState = { actions: Set() };
 
 export const ActionsStateContext = createContext(actionsInitialState);
 export const DispatchStateContext: Context<any> = createContext(undefined);

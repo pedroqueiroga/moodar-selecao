@@ -57,9 +57,9 @@ function SearchPage() {
     const resultP = (queries.size > 0) ?
         (
             <p>{
-                actions.length === 0 ?
+                actions.size === 0 ?
                     (`Nenhum resultado para: ${queries?.join(' ')}`) :
-                    (`Resultado${actions.length > 1 ?
+                    (`Resultado${actions.size > 1 ?
                         's' :
                         ''} para: ${queries?.join(' ')}`)
             }</p>
