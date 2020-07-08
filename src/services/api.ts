@@ -23,6 +23,10 @@ export function fetchActionsByNames(
     }
 }
 
+export function fetchActionsByIds(ids: number[]): ActionModel[] {
+    return allActions.filter(action => ids.includes(action.id));
+}
+
 export function fetchActionById(id: number): ActionModel {
     const action = allActions.find(action => id === action.id);
     if (!action) {
