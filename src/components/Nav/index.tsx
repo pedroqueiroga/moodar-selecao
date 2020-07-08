@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import { History } from 'history';
 import styles from './Nav.module.css';
 
-function Nav() {
+function Nav({ history }: { history: History }) {
     const [keywords, setKeywords] = useState('');
 
     const handleKeywordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setKeywords(e.currentTarget.value);
     };
+
+    const handleKeyUp = (e: React.KeyboardEvent) => {
+        if (e.keyCode === 13) {
+            history.push(`/search/?q=${keywords.trim()}`);
+        }
+    }
 
     return (
         <nav>
@@ -26,6 +33,7 @@ function Nav() {
                     name="keywords"
                     value={keywords}
                     onChange={handleKeywordChange}
+                    onKeyUp={handleKeyUp}
                 />
                 <Link
                     className={styles.searchsubmit}
@@ -41,4 +49,4 @@ function Nav() {
     );
 }
 
-export default Nav;
+export default withRouter(Nav);
