@@ -5,20 +5,22 @@ Aplicativo em React. Mini plataforma de gerenciamento de ações.
 ### Funcionalidades desenvolvidas:
 
 1. [ ] Barra de navegação (presente em todas as páginas)
-  * [ ] Caixa de texto para buscar por palavra-chave (título / categoria) **
+  * [x] Caixa de texto para buscar por palavra-chave (título / categoria) **
     * [ ] Busca em tempo real. *
-  * [ ] Botão de perfil **
+  * [x] Botão de perfil **
 2. [ ] Página de listagem de ações 
   * [ ] Barra lateral de de filtragem: categoria, audiência e duração. *
-  * [ ] Lista de ações (filtrada ou completa) **
-    * [ ] Clicar numa ação leva para a página de detalhe dessa ação
-3. [ ] Página de detalhe de ação 
-  * [ ] Título. **
-  * [ ] Categoria a qual pertence, audiência, duração. **
-  * [ ] Descrição da ação. **
-  * [ ] Botões:
-    * [ ] Solicitar ação    (se a ação não foi solicitada) **
-    * [ ] Cancelar ação     (se a ação foi solicitada) **
+  * [x] Lista de ações (filtrada ou completa) **
+    * [x] Clicar numa ação leva para a página de detalhe dessa ação
+    * [ ] Paginação.
+3. [x] Página de detalhe de ação 
+  * [x] Título. **
+  * [x] Categoria a qual pertence, audiência, duração. **
+    * [ ] Duração human-friendly. *
+  * [x] Descrição da ação. **
+  * [x] Botões:
+    * [x] Solicitar ação    (se a ação não foi solicitada) **
+    * [x] Cancelar ação     (se a ação foi solicitada) **
 4. [ ] "Perfil" da empresa - homepage 
   * [ ] Lista de ações solicitadas **
     * [ ] Acompanhar ação - leva para a página de detalhe dessa ação **
