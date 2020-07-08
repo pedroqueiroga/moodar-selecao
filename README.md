@@ -9,11 +9,11 @@ Aplicativo em React. Mini plataforma de gerenciamento de ações.
     * [ ] Busca em tempo real. *
   * [x] Botão de perfil **
 2. [ ] Página de listagem de ações 
-  * [ ] Barra lateral de de filtragem: categoria, audiência e duração. *
+  * [x] Barra lateral de de filtragem: categoria, audiência e duração. *
   * [x] Lista de ações (filtrada ou completa) **
     * [x] Clicar numa ação leva para a página de detalhe dessa ação
     * [ ] Paginação.
-3. [x] Página de detalhe de ação 
+3. [ ] Página de detalhe de ação 
   * [x] Título. **
   * [x] Categoria a qual pertence, audiência, duração. **
     * [ ] Duração human-friendly. *
@@ -22,8 +22,8 @@ Aplicativo em React. Mini plataforma de gerenciamento de ações.
     * [x] Solicitar ação    (se a ação não foi solicitada) **
     * [x] Cancelar ação     (se a ação foi solicitada) **
 4. [ ] "Perfil" da empresa - homepage 
-  * [ ] Lista de ações solicitadas **
-    * [ ] Acompanhar ação - leva para a página de detalhe dessa ação **
+  * [x] Lista de ações solicitadas **
+    * [x] Acompanhar ação - leva para a página de detalhe dessa ação **
     * [ ] Pode expandir a lista, levando para uma página onde seria possível aplicar os filtros e busca como na página de listagem de ações. *
   * [ ] Lista de ações concluídas
   * [ ] Lista de ações em andamento
