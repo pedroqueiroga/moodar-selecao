@@ -12,6 +12,14 @@ function Nav() {
     return (
         <nav>
             <div className={styles.searchbar}>
+                <Link
+                    className={styles.profile}
+                    to={{
+                        pathname: '/profile'
+                    }}
+                >
+                    Perfil
+                </Link>
                 <input
                     type="text"
                     id="keywords"

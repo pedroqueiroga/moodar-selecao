@@ -1,5 +1,5 @@
 import React, { useReducer, ReactNode } from 'react';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 
 import Nav from './components/Nav';
 import SearchPage from './components/SearchPage';
@@ -35,11 +35,16 @@ function App() {
                 <div>
                     <Nav />
                     <Switch>
+                        <Route path="/" exact>
+                            <Redirect to="/profile" />
+                        </Route>
                         <Route path="/search" exact component={SearchPage} />
                         <Route
                             path={['/actions/:id', '/actions/:id/:slug']}
                             exact
                             component={ActionDetail}
+                        />
+                        <Route path="*" exact component={() => <h1>404</h1>}
                         />
                     </Switch>
                 </div>
