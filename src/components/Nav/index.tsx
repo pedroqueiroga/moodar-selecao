@@ -23,7 +23,7 @@ function Nav() {
                     className={styles.searchsubmit}
                     to={{
                         pathname: '/search',
-                        search: `?q=${keywords}`
+                        search: `?q=${keywords.trim()}`
                     }}
                 >
                     Pesquisar

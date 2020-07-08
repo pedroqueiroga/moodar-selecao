@@ -9,10 +9,18 @@ function useQuery() {
 }
 
 function SearchPage() {
-    const query = useQuery().get("q");
-    const actions = fetchActions(query?.replace(/ +/g, " ").split(' '));
+    let keywords = useQuery().get("q")?.trim().replace(/ +/g, ' ').split(' ');
+    if (keywords && keywords[0] === '') {
+        keywords = undefined;
+    }
+    const actions = fetchActions(keywords)
+
     return (
         <div>
+            {keywords ?
+                (<p>Resultado{actions.length > 1 ? 's' : ''} para: {keywords.join(' ')}</p>)
+                : null
+            }
             <Actions actions={actions} />
         </div>
     );
