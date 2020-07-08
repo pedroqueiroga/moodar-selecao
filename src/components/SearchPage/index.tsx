@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import Actions from '../Actions';
+import ActionList from '../ActionList';
 import { fetchActions } from '../../services/api';
 
 function useQuery() {
@@ -21,7 +21,7 @@ function SearchPage() {
                 (<p>Resultado{actions.length > 1 ? 's' : ''} para: {keywords.join(' ')}</p>)
                 : null
             }
-            <Actions actions={actions} />
+            <ActionList actions={actions} />
         </div>
     );
 }
