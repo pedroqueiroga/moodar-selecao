@@ -1,7 +1,7 @@
 import ActionModel from '../models/ActionModel';
 import allActions from './ActionList';
 
-export function fetchActions(
+export function fetchActionsByNames(
     titlesCategories: string[] = []
 ): ActionModel[] {
     if (titlesCategories.length === 0) {
@@ -23,7 +23,7 @@ export function fetchActions(
     }
 }
 
-export function fetchAction(id: number): ActionModel {
+export function fetchActionById(id: number): ActionModel {
     const action = allActions.find(action => id === action.id);
     if (!action) {
         throw new Error('invalid id');

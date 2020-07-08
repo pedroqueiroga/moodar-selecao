@@ -1,12 +1,12 @@
 import React from 'react';
 import { Redirect, useParams } from 'react-router-dom';
 import Action from './Action';
-import { fetchAction } from '../../services/api';
+import { fetchActionById } from '../../services/api';
 
 function ActionDetail() {
     const { id, slug } = useParams();
     try {
-        const action = fetchAction(parseInt(id));
+        const action = fetchActionById(parseInt(id));
         if (action.slug !== slug) {
             return <Redirect to={`/actions/${action.id}/${action.slug}`} />;
         }

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import ActionModel from '../../../models/ActionModel';
 import { useGlobalState } from '../../../store/ActionsStore';

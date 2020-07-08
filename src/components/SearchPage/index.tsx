@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 
 import ActionList from '../ActionList';
-import { fetchActions } from '../../services/api';
+import { fetchActionsByNames } from '../../services/api';
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -13,7 +13,7 @@ function SearchPage() {
     if (keywords && keywords[0] === '') {
         keywords = undefined;
     }
-    const actions = fetchActions(keywords)
+    const actions = fetchActionsByNames(keywords)
 
     return (
         <div>
