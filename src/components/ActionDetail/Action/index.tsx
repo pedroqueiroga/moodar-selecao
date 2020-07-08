@@ -1,18 +1,12 @@
 import React, { useContext } from 'react';
 
 import ActionModel from '../../../models/ActionModel';
-import {
-    ActionsStateContext,
-    DispatchStateContext
-} from '../../../store/ActionsStore';
+import { useGlobalState } from '../../../store/ActionsStore';
 
 type ActionProp = { action: ActionModel };
 
 function Action({ action }: ActionProp) {
-    const [state, dispatch] = [
-        useContext(ActionsStateContext),
-        useContext(DispatchStateContext)
-    ];
+    const [state, dispatch] = useGlobalState();
 
     const isRequested = state.actions.some(id => id === action.id);
     const buttonText = `${isRequested ? 'Cancelar' : 'Solicitar'} Ação`

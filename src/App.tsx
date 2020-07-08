@@ -1,32 +1,10 @@
-import React, { useReducer, ReactNode } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 
 import Nav from './components/Nav';
 import SearchPage from './components/SearchPage';
 import ActionDetail from './components/ActionDetail';
-import {
-    TActionsState,
-    actionsInitialState,
-    ActionsStateContext,
-    DispatchStateContext
-} from './store/ActionsStore';
-
-
-function GlobalStateProvider({ children }: { children: ReactNode }) {
-    const [state, dispatch] = useReducer(
-        (state: TActionsState, newValue: TActionsState) => (
-            { ...state, ...newValue }
-        ),
-        actionsInitialState,
-    );
-    return (
-        <ActionsStateContext.Provider value={state}>
-            <DispatchStateContext.Provider value={dispatch}>
-                {children}
-            </DispatchStateContext.Provider>
-        </ActionsStateContext.Provider>
-    );
-}
+import { GlobalStateProvider } from './store/ActionsStore';
 
 function App() {
     return (
