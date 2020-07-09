@@ -5,12 +5,20 @@ import { List } from 'immutable';
 import ActionItem from './ActionItem';
 import ActionModel from '../../models/ActionModel';
 
+import styles from './ActionList.module.css';
+
 type ActionListProps = { actions: List<ActionModel> };
 
 function ActionList({ actions }: ActionListProps) {
     return (
-        <ul>
-            {actions.map((a) => <li key={a.id}><ActionItem action={a} /></li>)}
+        <ul className={styles.list}>
+            {actions.map((a) =>
+                <li
+                    className={styles.item}
+                    key={a.id}
+                >
+                    <ActionItem action={a} />
+                </li>)}
         </ul>
     );
 }

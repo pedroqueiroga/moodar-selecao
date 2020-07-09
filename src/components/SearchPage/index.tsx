@@ -7,6 +7,9 @@ import ActionList from '../ActionList';
 import { fetchActionsByNames } from '../../services/api';
 import FilterBox from './FilterBox';
 import { Category } from '../../models/ActionModel';
+import Box from '../Box';
+
+import styles from './SearchPage.module.css';
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -66,10 +69,22 @@ function SearchPage() {
         ) :
         null;
     return (
-        <div>
-            {resultP}
-            <ActionList actions={actions} />
-            <FilterBox changeFilters={dispatch} />
+        <div className={styles.body}>
+            <div className={styles.filter}>
+                <Box
+                    title="Filtrar ações"
+                >
+                    <FilterBox changeFilters={dispatch} />
+                </Box>
+            </div>
+            <div className={styles.el}>
+                <Box
+                    title="Ações disponíveis"
+                >
+                    {resultP}
+                    <ActionList actions={actions} />
+                </Box>
+            </div>
         </div>
     );
 }
