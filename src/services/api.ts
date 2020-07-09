@@ -15,9 +15,10 @@ function compareActions(a: ActionModel, b: ActionModel): number {
         ((a.title === b.title) && a.category <= b.category)) ? -1 : 1;
 }
 
-export function fetchActionsByNames(
+export function fetchActionsByAttrs(
     titlesCategories: Set<string> = Set(),
     mustHaveCats: Set<string> = Set(),
+    maximumCapacity: number = NaN,
 ): List<ActionModel> {
     const cleanTcs = titlesCategories.map(tc => normalizeString(tc));
     const cleanMHC = mustHaveCats.map(cat => normalizeString(cat));
@@ -29,8 +30,10 @@ export function fetchActionsByNames(
             cleanMHC.find(cat => cleanActionCat.includes(cat));
         const containsTc = cleanTcs.size === 0 ||
             cleanTcs.find(tc => cleanActionTitle.includes(tc));
+        const respectsMaximumCap = isNaN(maximumCapacity) ||
+            (action.capacity <= maximumCapacity);
 
-        return containsTc && containsMHC;
+        return containsTc && containsMHC && respectsMaximumCap;
     }).sort(compareActions);
 }
 

@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { Set } from 'immutable';
 
 import ActionList from '../ActionList';
-import { fetchActionsByNames } from '../../services/api';
+import { fetchActionsByAttrs } from '../../services/api';
 import FilterBox from './FilterBox';
 import { Category } from '../../models/ActionModel';
 import Box from '../Box';
@@ -56,7 +56,11 @@ function SearchPage() {
         .split(' ')
         .filter(query => query.length > 0) || []);
 
-    const actions = fetchActionsByNames(queries, state.categories);
+    const actions = fetchActionsByAttrs(
+        queries,
+        state.categories,
+        state.capacity
+    );
     const resultP = (queries.size > 0) ?
         (
             <p>{
