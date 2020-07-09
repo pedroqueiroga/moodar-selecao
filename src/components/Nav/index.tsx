@@ -17,17 +17,18 @@ function Nav({ history }: { history: History }) {
     }
 
     return (
-        <nav>
-            <div className={styles.searchbar}>
-                <Link
-                    className={styles.profile}
-                    to={{
-                        pathname: '/profile'
-                    }}
-                >
-                    Perfil
-                </Link>
+        <nav className={styles.nav}>
+            <Link
+                className={`${styles.profile} ${styles.link} ${styles.navItem}`}
+                to={{
+                    pathname: '/profile'
+                }}
+            >
+                Perfil
+            </Link>
+            <div className={`${styles.navItem} ${styles.searchItem}`}>
                 <input
+                    className={styles.searchbar}
                     type="text"
                     id="keywords"
                     name="keywords"
@@ -36,13 +37,12 @@ function Nav({ history }: { history: History }) {
                     onKeyUp={handleKeyUp}
                 />
                 <Link
-                    className={styles.searchsubmit}
+                    className={`${styles.searchsubmit}`}
                     to={{
                         pathname: '/search',
                         search: `?q=${keywords.trim()}`
                     }}
                 >
-                    Pesquisar
                 </Link>
             </div>
         </nav>

@@ -1,11 +1,67 @@
 .searchbar {
-    color: red;
+    color: black;
+    width: 42%;
+    float: none;
+    height: 32px;
+    margin-left: 2px;
+    margin-right: 0px;
+    font-size: 20px;
 }
 
+.searchbar:focus, .searchbar:active {
+    border: 2px solid greenyellow;
+}
+
+
 .searchsubmit {
-    color: green;
+    background-image: url("/search-icon-32.png");
+    background-size: 24px;
+    padding: 7px 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: greenyellow;
+}
+
+.searchsubmit:hover {
+    background-color: yellowgreen;
+}
+
+.searchItem {
+    
 }
 
 .profile {
-    color: green;
+
+}
+
+.navItem {
+    display: inline;
+    font-size: 1em;
+    padding: 0.5em;
+    margin: 0 5px;
+}
+
+.linkContainer:hover {
+    border: 1px solid white;
+    border-radius: 2px;
+ }
+
+.link {
+    padding: 10px;
+    color: white;
+    text-decoration: none;
+}
+.link:hover {
+    padding: 9px;
+    border: 1px solid;
+    border-color: white;
+    border-radius: 2px;
+}
+
+.nav {
+    background: purple;
+    margin: 0;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 20px;
 }
