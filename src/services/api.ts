@@ -14,7 +14,8 @@ export function fetchActionsByAttrs(
     titlesCategories: Set<string> = Set(),
     mustHaveCats: Set<string> = Set(),
     maximumCapacity: number = NaN,
-    sortedBy?: string
+    sortBy?: string,
+    reverse: boolean = false,
 ): List<ActionModel> {
     const cleanTcs = titlesCategories.map(tc => normalizeString(tc));
     const cleanMHC = mustHaveCats.map(cat => normalizeString(cat));
@@ -32,16 +33,9 @@ export function fetchActionsByAttrs(
         return containsTc && containsMHC && respectsMaximumCap;
     });
 
-    switch (sortedBy) {
-        case 'name':
-            return filteredActions.sort(compareActionsByName);
-        case 'capacity':
-            return filteredActions.sort(compareActionsByCapacity);
-        case 'duration':
-            return filteredActions.sort(compareActionsByDuration);
-        default:
-            return filteredActions;
-    }
+    return sortBy ?
+        sortActions(filteredActions, sortBy, reverse) :
+        filteredActions;
 }
 
 export function fetchActionsByIds(ids: Set<number>): List<ActionModel> {
@@ -54,4 +48,25 @@ export function fetchActionById(id: number): ActionModel {
         throw new Error('invalid id');
     }
     return action;
+}
+
+export function sortActions(
+    actions: List<ActionModel>,
+    sortedBy: string,
+    reverse: boolean = false,
+): List<ActionModel> {
+    const compare = (cmp: Function) =>
+        (a: ActionModel, b: ActionModel) =>
+            reverse ? (-1) * cmp(a, b) : cmp(a, b);
+
+    switch (sortedBy) {
+        case 'name':
+            return actions.sort(compare(compareActionsByName));
+        case 'capacity':
+            return actions.sort(compare(compareActionsByCapacity));
+        case 'duration':
+            return actions.sort(compare(compareActionsByDuration));
+        default:
+            throw new Error('Invalid sort function');
+    }
 }

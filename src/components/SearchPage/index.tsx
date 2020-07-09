@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { Set } from 'immutable';
@@ -47,9 +47,27 @@ function SearchPage() {
 
     const [state, dispatch] = useReducer(reducer, initialState);
 
+    const [sortFunction, setSortFunction] = useState({ sortBy: 'name', reverse: false });
+
+    function onClickHandler(e: React.MouseEvent<HTMLInputElement>) {
+        if (sortFunction.sortBy === e.currentTarget.id) {
+            // the function is already sorted by this attribute, reverse it.
+            setSortFunction({
+                ...sortFunction,
+                reverse: !sortFunction.reverse
+            })
+        } else {
+            setSortFunction({
+                sortBy: e.currentTarget.id,
+                reverse: false
+            });
+        }
+    }
+
     useEffect(() => {
         console.log('queries', queries);
         console.log('state', state);
+        console.log('sortFunction', sortFunction);
     })
 
     const queries = Set(useQuery().get("q")?.trim().replace(/ +/g, ' ')
@@ -60,19 +78,26 @@ function SearchPage() {
         queries,
         state.categories,
         state.capacity,
-        'name'
+        sortFunction.sortBy,
+        sortFunction.reverse
     );
-    const resultP = (queries.size > 0) ?
-        (
-            <p>{
-                actions.size === 0 ?
-                    (`Nenhum resultado para: ${queries?.join(' ')}`) :
-                    (`Resultado${actions.size > 1 ?
-                        's' :
-                        ''} para: ${queries?.join(' ')}`)
-            }</p>
-        ) :
-        null;
+
+    const noResult = queries.size > 0 ? ` para: ${queries?.join(' ')}` : '';
+
+    const resultP = (
+        <p>{
+            actions.size === 0 ?
+                (`Nenhum resultado${noResult}. Tente remover filtros ou buscar outros termos.`) :
+                (queries.size > 0 ?
+                    (`Resultado${
+                        actions.size > 1 ?
+                            's' :
+                            ''
+                        } para: ${queries?.join(' ')} `) :
+                    null)
+        }</p>
+    );
+
     return (
         <div className={styles.body}>
             <div className={styles.filter}>
@@ -86,6 +111,20 @@ function SearchPage() {
                 <Box
                     title="Ações disponíveis"
                 >
+                    <span>Ordenar: </span>
+                    <input
+                        className={styles.ordering}
+                        type="button" value="Nome"
+                        id="name"
+                        onClick={onClickHandler} />
+                    <input
+                        type="button" value="Duração"
+                        id="duration"
+                        onClick={onClickHandler} />
+                    <input
+                        type="button" value="Capacidade"
+                        id="capacity"
+                        onClick={onClickHandler} />
                     {resultP}
                     <ActionList actions={actions} />
                 </Box>

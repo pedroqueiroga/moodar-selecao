@@ -53,7 +53,7 @@ function FilterBox({ changeFilters }: { changeFilters: Dispatch<any> }) {
                     className={styles.inputNumber}
                     type="number"
                     min={0}
-                    value={capacity}
+                    value={capacity.toString()}
                     onChange={onCapacityChangeHandler}
                 />
             </Box>
@@ -63,15 +63,15 @@ function FilterBox({ changeFilters }: { changeFilters: Dispatch<any> }) {
                     className={styles.inputNumber}
                     type="number"
                     min={0}
-                    value={duration.min}
+                    value={duration.min.toString()}
                     onChange={onMinDurationChangeHandler}
                 />
                 <span> a </span>
                 <input
                     className={styles.inputNumber}
                     type="number"
-                    min={duration.min}
-                    value={duration.max}
+                    min={duration.min.toString()}
+                    value={duration.max.toString()}
                     onChange={onMaxDurationChangeHandler}
                 />
                 <span> minutos.</span>
