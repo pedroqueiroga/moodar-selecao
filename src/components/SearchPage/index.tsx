@@ -59,7 +59,8 @@ function SearchPage() {
     const actions = fetchActionsByAttrs(
         queries,
         state.categories,
-        state.capacity
+        state.capacity,
+        'name'
     );
     const resultP = (queries.size > 0) ?
         (

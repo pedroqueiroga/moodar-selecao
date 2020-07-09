@@ -1,6 +1,6 @@
 import { Set, List } from 'immutable';
 
-import ActionModel from '../models/ActionModel';
+import ActionModel, { compareActionsByName, compareActionsByCapacity, compareActionsByDuration } from '../models/ActionModel';
 import allActions from './ActionList';
 
 function normalizeString(str: string) {
@@ -10,19 +10,15 @@ function normalizeString(str: string) {
         .toUpperCase();
 }
 
-function compareActions(a: ActionModel, b: ActionModel): number {
-    return ((a.title < b.title) ||
-        ((a.title === b.title) && a.category <= b.category)) ? -1 : 1;
-}
-
 export function fetchActionsByAttrs(
     titlesCategories: Set<string> = Set(),
     mustHaveCats: Set<string> = Set(),
     maximumCapacity: number = NaN,
+    sortedBy?: string
 ): List<ActionModel> {
     const cleanTcs = titlesCategories.map(tc => normalizeString(tc));
     const cleanMHC = mustHaveCats.map(cat => normalizeString(cat));
-    return allActions.filter(action => {
+    const filteredActions = allActions.filter(action => {
         const cleanActionTitle = normalizeString(action.title);
         const cleanActionCat = normalizeString(action.category);
 
@@ -34,7 +30,18 @@ export function fetchActionsByAttrs(
             (action.capacity <= maximumCapacity);
 
         return containsTc && containsMHC && respectsMaximumCap;
-    }).sort(compareActions);
+    });
+
+    switch (sortedBy) {
+        case 'name':
+            return filteredActions.sort(compareActionsByName);
+        case 'capacity':
+            return filteredActions.sort(compareActionsByCapacity);
+        case 'duration':
+            return filteredActions.sort(compareActionsByDuration);
+        default:
+            return filteredActions;
+    }
 }
 
 export function fetchActionsByIds(ids: Set<number>): List<ActionModel> {
