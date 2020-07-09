@@ -12,6 +12,7 @@ Aplicativo em React. Mini plataforma de gerenciamento de ações.
   * [x] Barra lateral de de filtragem: categoria, audiência e duração. *
   * [x] Lista de ações (filtrada ou completa) **
     * [x] Clicar numa ação leva para a página de detalhe dessa ação
+    * [x] Ordena lista.
     * [ ] Paginação.
 3. [ ] Página de detalhe de ação 
   * [x] Título. **
