@@ -3,6 +3,8 @@ import { Redirect, useParams } from 'react-router-dom';
 import Action from './Action';
 import { fetchActionById } from '../../services/api';
 
+import Box from '../Box/';
+
 function ActionDetail() {
     const { id, slug } = useParams();
     try {
@@ -10,7 +12,11 @@ function ActionDetail() {
         if (action.slug !== slug) {
             return <Redirect to={`/actions/${action.id}/${action.slug}`} />;
         }
-        return <Action action={action} />;
+        return (
+            <Box>
+                <Action action={action} />
+            </Box >
+        );
     } catch (e) {
         return <Redirect to="/404" />
     }

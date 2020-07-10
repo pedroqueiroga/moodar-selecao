@@ -3,6 +3,8 @@ import React from 'react';
 import ActionModel from '../../../models/ActionModel';
 import { useGlobalState } from '../../../store/ActionsStore';
 
+import styles from './Action.module.css';
+
 type ActionProp = { action: ActionModel };
 
 function Action({ action }: ActionProp) {
@@ -34,6 +36,7 @@ function Action({ action }: ActionProp) {
             <br />
 
             <input
+                className={styles.button}
                 type="button"
                 value={buttonText}
                 onClick={onClickHandler}
