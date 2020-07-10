@@ -38,8 +38,16 @@ export function fetchActionsByAttrs(
         filteredActions;
 }
 
-export function fetchActionsByIds(ids: Set<number>): List<ActionModel> {
-    return allActions.filter(action => ids.includes(action.id));
+export function fetchActionsByIds(
+    ids: Set<number>,
+    sortBy?: string,
+    reverse: boolean = false,
+): List<ActionModel> {
+    const filteredActions = allActions.filter(action => ids.includes(action.id));
+
+    return sortBy ?
+        sortActions(filteredActions, sortBy, reverse) :
+        filteredActions;
 }
 
 export function fetchActionById(id: number): ActionModel {

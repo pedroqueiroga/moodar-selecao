@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useState } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import { Set, List } from 'immutable';
@@ -10,7 +10,7 @@ import { Category } from '../../models/ActionModel';
 import Box from '../Box';
 
 import styles from './SearchPage.module.css';
-import OrderBy from '../ActionList/OrderBy';
+import OrderBy, { OrderByReducer } from '../ActionList/OrderBy';
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -46,28 +46,18 @@ function SearchPage() {
         categories: Set()
     };
 
+    const sortInitialState = { sortAttr: 'name', reverse: false };
+
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    const [sortFunction, setSortFunction] = useState({ sortBy: 'name', reverse: false });
-
-    function onReverseHandler() {
-        setSortFunction({
-            ...sortFunction,
-            reverse: !sortFunction.reverse
-        })
-    }
-
-    function onSelectHandler(e: React.ChangeEvent<HTMLSelectElement>) {
-        setSortFunction({
-            sortBy: e.currentTarget.value,
-            reverse: false
-        });
-    }
+    const [sortState, sortDispatch] = useReducer(
+        OrderByReducer,
+        sortInitialState
+    );
 
     useEffect(() => {
         console.log('queries', queries);
         console.log('state', state);
-        console.log('sortFunction', sortFunction);
     })
 
     const queries = Set(useQuery().get("q")?.trim().replace(/ +/g, ' ')
@@ -78,8 +68,8 @@ function SearchPage() {
         queries,
         state.categories,
         state.capacity,
-        sortFunction.sortBy,
-        sortFunction.reverse
+        sortState.sortAttr,
+        sortState.reverse,
     );
 
     const noResult = queries.size > 0 ? ` para: ${queries?.join(' ')}` : '';
@@ -131,15 +121,14 @@ function SearchPage() {
                         {cleanQueries}
                         <OrderBy
                             className={styles.listHeaderRight}
-                            defaultValue={sortFunction.sortBy}
+                            defaultValue={sortInitialState.sortAttr}
                             options={List([
                                 { value: 'name', text: 'Nome' },
                                 { value: 'duration', text: 'Duração' },
                                 { value: 'capacity', text: 'Audiência' },
                             ])}
-                            reverseCallBack={onReverseHandler}
-                            selectCallBack={onSelectHandler}
-                            isDescend={sortFunction.reverse}
+                            dispatch={sortDispatch}
+                            isDescend={sortState.reverse}
                         />
                     </div>
                     <ActionList actions={actions} />

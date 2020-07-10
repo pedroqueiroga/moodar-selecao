@@ -1,25 +1,53 @@
-import React from 'react';
+import React, { useReducer } from 'react';
+import { Link } from 'react-router-dom';
+
+import { List } from 'immutable';
+
 import ActionList from '../ActionList';
 import { useGlobalState } from '../../store/ActionsStore';
 import { fetchActionsByIds } from '../../services/api';
-import { Link } from 'react-router-dom';
-
 import styles from './Profile.module.css';
 import Box from '../Box';
+import OrderBy, { OrderByReducer, TOrderByReducerState } from '../ActionList/OrderBy';
 
 function Profile() {
     const [state] = useGlobalState();
-    const actions = fetchActionsByIds(state.actions);
+
+    const initialState: TOrderByReducerState = {
+        sortAttr: 'name',
+        reverse: false,
+    };
+
+    const [sortState, dispatch] = useReducer(OrderByReducer, initialState);
+
+    const actions = fetchActionsByIds(
+        state.actions,
+        sortState.sortAttr,
+        sortState.reverse
+    );
 
     return (
         <div className={styles.main}>
             <h2>Olá, empresa.</h2>
             <Link to="/search">
                 Ver todas as ações disponíveis.
-            </Link>
+                          </Link>
             <Box title="Ações solicitadas">
                 {actions.size > 0 ?
-                    (<ActionList actions={actions} />) :
+                    (<div>
+                        <OrderBy
+                            className={styles.orderBy}
+                            defaultValue={initialState.sortAttr}
+                            options={List([
+                                { value: 'name', text: 'Nome' },
+                                { value: 'duration', text: 'Duração' },
+                                { value: 'capacity', text: 'Audiência' },
+                            ])}
+                            dispatch={dispatch}
+                            isDescend={sortState.reverse}
+                        />
+                        < ActionList actions={actions} />
+                    </div>) :
                     <p>Nenhuma ação solicitada.</p>
                 }
 
