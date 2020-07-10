@@ -50,7 +50,7 @@
     display: inline;
     font-size: 1em;
     padding: 0.5em;
-    margin: 0 5px;
+    margin: 5px;
 }
 
 .linkContainer:hover {
@@ -76,4 +76,19 @@
     padding-top: 15px;
     padding-bottom: 15px;
     font-size: 20px;
+}
+
+.navButton {
+    overflow: hidden;
+}
+
+.navButton .line1 {
+    font-size: 12px;
+    display: inline-block;
+}
+
+.navButton .line2 {
+    font-size: 14px;
+    font-weight: bold;
+    display: inline-block;
 }
