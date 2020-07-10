@@ -1,5 +1,5 @@
 import React, { useReducer, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import { Set, List } from 'immutable';
 
@@ -84,6 +84,14 @@ function SearchPage() {
 
     const noResult = queries.size > 0 ? ` para: ${queries?.join(' ')}` : '';
 
+    const cleanQueries = queries.size > 0 ?
+        (<p>
+            <Link to="/search">
+                Limpar busca.
+                                            </Link>
+        </p>) :
+        null;
+
     const resultP = (
         <p>{
             actions.size === 0 ?
@@ -120,6 +128,7 @@ function SearchPage() {
                     <div className={styles.listHeader}>
                         {resultP}
                         {messageP}
+                        {cleanQueries}
                         <OrderBy
                             className={styles.listHeaderRight}
                             defaultValue={sortFunction.sortBy}

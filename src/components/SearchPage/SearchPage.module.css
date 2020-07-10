@@ -27,6 +27,10 @@
     overflow-wrap: break-word;
 }
 
+.listHeader p a {
+    color: green;
+}
+
 .listHeaderRight {
     display: inline-block;
     min-width: 190px;
