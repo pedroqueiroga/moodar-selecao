@@ -6,13 +6,25 @@ import { Set } from 'immutable';
 
 import styles from './FilterBox.module.css';
 
-export type TFilterState = { capacity: number | undefined, duration: number | undefined, categories: Set<string> };
+export type TFilterState = {
+    capacity: number | undefined,
+    duration: {
+        min: number | undefined,
+        max: number | undefined
+    } | undefined,
+    categories: Set<string>
+};
 
 export type TFilterAction =
     | { type: 'include_cat', payload: string }
     | { type: 'remove_cat', payload: string }
     | { type: 'change_capacity', payload: number }
-    | { type: 'change_duration', payload: number }
+    | {
+        type: 'change_duration', payload: {
+            min: number | undefined,
+            max: number | undefined
+        }
+    }
 
 export function filterReducer(state: TFilterState, action: TFilterAction) {
     switch (action.type) {
@@ -35,7 +47,7 @@ export function filterReducer(state: TFilterState, action: TFilterAction) {
     }
 }
 
-function FilterBox({ changeFilters }: { changeFilters: Dispatch<any> }) {
+function FilterBox({ changeFilters }: { changeFilters: Dispatch<TFilterAction> }) {
 
     const [duration, setDuration] = useState({ min: NaN, max: NaN });
     const [capacity, setCapacity] = useState(NaN);
@@ -44,6 +56,14 @@ function FilterBox({ changeFilters }: { changeFilters: Dispatch<any> }) {
         console.log('duration', duration);
         console.log('capacity', capacity);
     });
+
+    useEffect(() => {
+        changeFilters({ type: 'change_capacity', payload: capacity });
+    }, [capacity]);
+
+    useEffect(() => {
+        changeFilters({ type: 'change_duration', payload: { ...duration } });
+    }, [duration]);
 
     function getMembers(catsEnum: TCategory): string[] {
         return Object.keys(catsEnum).map(key => catsEnum[key])
@@ -62,7 +82,6 @@ function FilterBox({ changeFilters }: { changeFilters: Dispatch<any> }) {
     function onCapacityChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
         const newCapacity: number = parseInt(e.target.value)
         setCapacity(newCapacity);
-        changeFilters({ type: 'change_capacity', payload: newCapacity });
     }
 
     function onMinDurationChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
@@ -87,6 +106,12 @@ function FilterBox({ changeFilters }: { changeFilters: Dispatch<any> }) {
                     value={capacity.toString()}
                     onChange={onCapacityChangeHandler}
                 />
+                <a
+                    className={styles.cleanFilter}
+                    onClick={() => setCapacity(NaN)}
+                >
+                    X
+                </a>
             </Box>
             <Box title="Duração">
 
@@ -97,7 +122,15 @@ function FilterBox({ changeFilters }: { changeFilters: Dispatch<any> }) {
                     value={duration.min.toString()}
                     onChange={onMinDurationChangeHandler}
                 />
+                <a
+                    className={styles.cleanFilter}
+                    onClick={() => setDuration({ ...duration, min: NaN })}
+                >
+                    X
+                </a>
+                <br />
                 <span> a </span>
+                <br />
                 <input
                     className={styles.inputNumber}
                     type="number"
@@ -105,6 +138,12 @@ function FilterBox({ changeFilters }: { changeFilters: Dispatch<any> }) {
                     value={duration.max.toString()}
                     onChange={onMaxDurationChangeHandler}
                 />
+                <a
+                    className={styles.cleanFilter}
+                    onClick={() => setDuration({ ...duration, max: NaN })}
+                >
+                    X
+                </a>
                 <span> minutos.</span>
             </Box>
             <Box title="Categorias">

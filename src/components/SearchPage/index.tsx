@@ -44,6 +44,8 @@ function SearchPage() {
         queries,
         state.categories,
         state.capacity,
+        state.duration?.min,
+        state.duration?.max,
         sortState.sortAttr,
         sortState.reverse,
     );

@@ -14,6 +14,8 @@ export function fetchActionsByAttrs(
     titlesCategories: Set<string> = Set(),
     mustHaveCats: Set<string> = Set(),
     maximumCapacity: number = NaN,
+    minimumDuration: number = NaN,
+    maximumDuration: number = NaN,
     sortBy?: string,
     reverse: boolean = false,
 ): List<ActionModel> {
@@ -29,8 +31,14 @@ export function fetchActionsByAttrs(
             cleanTcs.find(tc => cleanActionTitle.includes(tc));
         const respectsMaximumCap = isNaN(maximumCapacity) ||
             (action.capacity <= maximumCapacity);
+        const inDurationRange = (isNaN(minimumDuration) ||
+            (action.duration >= minimumDuration)) && (isNaN(maximumDuration) ||
+                (action.duration <= maximumDuration))
 
-        return containsTc && containsMHC && respectsMaximumCap;
+        return containsTc &&
+            containsMHC &&
+            respectsMaximumCap &&
+            inDurationRange;
     });
 
     return sortBy ?
