@@ -59,11 +59,11 @@ function FilterBox({ changeFilters }: { changeFilters: Dispatch<TFilterAction> }
 
     useEffect(() => {
         changeFilters({ type: 'change_capacity', payload: capacity });
-    }, [capacity]);
+    }, [capacity, changeFilters]);
 
     useEffect(() => {
         changeFilters({ type: 'change_duration', payload: { ...duration } });
-    }, [duration]);
+    }, [duration, changeFilters]);
 
     function getMembers(catsEnum: TCategory): string[] {
         return Object.keys(catsEnum).map(key => catsEnum[key])
@@ -73,9 +73,15 @@ function FilterBox({ changeFilters }: { changeFilters: Dispatch<TFilterAction> }
 
     function onCheckHandler(e: React.ChangeEvent<HTMLInputElement>) {
         if (e.target.checked) {
-            changeFilters({ type: 'include_cat', payload: categories[parseInt(e.target.id)] });
+            changeFilters({
+                type: 'include_cat',
+                payload: categories[parseInt(e.target.id)]
+            });
         } else {
-            changeFilters({ type: 'remove_cat', payload: categories[parseInt(e.target.id)] });
+            changeFilters({
+                type: 'remove_cat',
+                payload: categories[parseInt(e.target.id)]
+            });
         }
     }
 
@@ -106,12 +112,12 @@ function FilterBox({ changeFilters }: { changeFilters: Dispatch<TFilterAction> }
                     value={capacity.toString()}
                     onChange={onCapacityChangeHandler}
                 />
-                <a
+                <input
+                    type="button"
+                    value="X"
                     className={styles.cleanFilter}
                     onClick={() => setCapacity(NaN)}
-                >
-                    X
-                </a>
+                />
             </Box>
             <Box title="Duração">
 
@@ -122,12 +128,12 @@ function FilterBox({ changeFilters }: { changeFilters: Dispatch<TFilterAction> }
                     value={duration.min.toString()}
                     onChange={onMinDurationChangeHandler}
                 />
-                <a
+                <input
+                    type="button"
+                    value="X"
                     className={styles.cleanFilter}
                     onClick={() => setDuration({ ...duration, min: NaN })}
-                >
-                    X
-                </a>
+                />
                 <br />
                 <span> a </span>
                 <br />
@@ -138,25 +144,27 @@ function FilterBox({ changeFilters }: { changeFilters: Dispatch<TFilterAction> }
                     value={duration.max.toString()}
                     onChange={onMaxDurationChangeHandler}
                 />
-                <a
+                <input
+                    type="button"
+                    value="X"
                     className={styles.cleanFilter}
                     onClick={() => setDuration({ ...duration, max: NaN })}
-                >
-                    X
-                </a>
+                />
                 <span> minutos.</span>
             </Box>
             <Box title="Categorias">
                 {categories.map((cat, idx) => (
-                    <div key={idx}>
+                    <label
+                        className={styles.checkboxContainer}
+                        key={idx}
+                        htmlFor={cat}>{cat}
                         <input
                             type="checkbox"
                             id={idx.toString()}
                             name={cat}
                             onChange={onCheckHandler}
                         />
-                        <label htmlFor={cat}>{cat}</label>
-                    </div>
+                    </label>
                 ))}
             </Box>
         </div>
