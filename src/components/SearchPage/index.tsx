@@ -3,6 +3,8 @@ import { useLocation } from 'react-router-dom';
 
 import { Set } from 'immutable';
 
+import classNames from 'classnames';
+
 import ActionList from '../ActionList';
 import { fetchActionsByAttrs } from '../../services/api';
 import FilterBox from './FilterBox';
@@ -49,19 +51,18 @@ function SearchPage() {
 
     const [sortFunction, setSortFunction] = useState({ sortBy: 'name', reverse: false });
 
-    function onClickHandler(e: React.MouseEvent<HTMLInputElement>) {
-        if (sortFunction.sortBy === e.currentTarget.id) {
-            // the function is already sorted by this attribute, reverse it.
-            setSortFunction({
-                ...sortFunction,
-                reverse: !sortFunction.reverse
-            })
-        } else {
-            setSortFunction({
-                sortBy: e.currentTarget.id,
-                reverse: false
-            });
-        }
+    function onReverseHandler() {
+        setSortFunction({
+            ...sortFunction,
+            reverse: !sortFunction.reverse
+        })
+    }
+
+    function onSelectHandler(e: React.ChangeEvent<HTMLSelectElement>) {
+        setSortFunction({
+            sortBy: e.currentTarget.value,
+            reverse: false
+        });
     }
 
     useEffect(() => {
@@ -87,7 +88,7 @@ function SearchPage() {
     const resultP = (
         <p>{
             actions.size === 0 ?
-                (`Nenhum resultado${noResult}. Tente remover filtros ou buscar outros termos.`) :
+                (`Nenhum resultado${noResult}.`) :
                 (queries.size > 0 ?
                     (`Resultado${
                         actions.size > 1 ?
@@ -96,6 +97,12 @@ function SearchPage() {
                         } para: ${queries?.join(' ')} `) :
                     null)
         }</p>
+    );
+
+    const messageP = (
+        actions.size === 0 ?
+            <p>Tente remover filtros ou buscar outros termos.</p> :
+            null
     );
 
     return (
@@ -111,21 +118,34 @@ function SearchPage() {
                 <Box
                     title="Ações disponíveis"
                 >
-                    <span>Ordenar: </span>
-                    <input
-                        className={styles.ordering}
-                        type="button" value="Nome"
-                        id="name"
-                        onClick={onClickHandler} />
-                    <input
-                        type="button" value="Duração"
-                        id="duration"
-                        onClick={onClickHandler} />
-                    <input
-                        type="button" value="Capacidade"
-                        id="capacity"
-                        onClick={onClickHandler} />
-                    {resultP}
+                    <div className={styles.listHeader}>
+                        {resultP}
+                        {messageP}
+                        <div>
+                            <span>Ordenar por </span>
+                            <select
+                                className={styles.ordering}
+                                onChange={onSelectHandler}
+                                defaultValue={sortFunction.sortBy}
+                            >
+                                <option value="name">Nome</option>
+                                <option value="duration">Duração</option>
+                                <option value="capacity">Audiência</option>
+                            </select>
+
+                            <input
+                                className={styles.reverse}
+                                type="button"
+                                id="toggleReverse"
+                                onClick={onReverseHandler}
+                                value={
+                                    sortFunction.reverse ?
+                                        '▼' :
+                                        '▲'
+                                }
+                            />
+                        </div>
+                    </div>
                     <ActionList actions={actions} />
                 </Box>
             </div>

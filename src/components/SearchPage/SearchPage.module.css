@@ -13,5 +13,53 @@
 }
 
 .ordering {
-    
+    font-size: inherit;
+    text-decoration: underline;
+    -o-appearance: none;
+    -ms-appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+    padding: 0!important;
+    background-color: lightpink;
+}
+
+.ordering option {
+    color: green;
+    cursor: pointer;
+    user-select: none;
+    background: rgba(0,0,0,0.1);
+}
+
+.ordering:active,
+.ordering:focus,
+.reverse:active,
+.reverse:focus {
+    border: none;
+    outline: none!important;
+}
+
+.reverse {
+    font-size: inherit;
+    background: none!important;
+    border: none;
+    padding: 0!important;
+}
+
+.listHeader {
+    margin-bottom: 5px;
+}
+
+.listHeader p {
+    display: inline-block;
+    width: 70%;
+    padding: 0;
+    margin: 0;
+    overflow-wrap: break-word;
+}
+
+.listHeader div {
+    display: inline-block;
+    float: right;
 }
