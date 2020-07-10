@@ -2,15 +2,15 @@
     padding-left: 10px;
     border: 1px solid;
     border-color: green;
-    background-color: rgba(90, 90, 90, 0.3);
+    background-color: rgba(255,255,255, 0.4);
 }
 
 .item:hover {
-    background-color: rgba(90, 90, 90, 0.2);
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .item:active {
-    background-color: rgba(90, 90, 90, 0.1);
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .list {

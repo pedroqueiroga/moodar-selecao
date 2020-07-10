@@ -4,6 +4,12 @@
     background-color: lightpink;
     padding: 5px 5px 5px 5px;
     margin: 15px 15px 15px 5px;
+    box-shadow: -3px 3px purple;
+}
+
+.body:hover {
+    box-shadow: -2px 2px purple;
+    transform: translate(-1px, 1px);
 }
 
 .children {
