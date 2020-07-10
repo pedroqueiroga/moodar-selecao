@@ -1,7 +1,7 @@
 .searchbar {
     border: 0px;
     color: black;
-    width: 42%;
+    width: 500px;
     float: none;
     height: 36px;
     margin-left: 0px;
@@ -23,7 +23,7 @@
     -moz-appearance: none;
     background-image: url("/search-icon-32.png");
     background-size: 24px;
-    padding: 7px 20px 8px 20px;
+    padding: 6px 20px 9px 20px;
     background-position: center;
     background-repeat: no-repeat;
     background-color: greenyellow;
@@ -35,7 +35,7 @@
 
 .searchItem {
     border: 2px solid transparent;
-    padding: 7px 0px 8px 0px!important;
+    margin: 2px 5px 2px 0!important;
 }
 
 .searchItem:focus-within {
@@ -47,10 +47,8 @@
 }
 
 .navItem {
-    display: inline;
-    font-size: 1em;
-    padding: 0.5em;
-    margin: 5px;
+    display: inline-block;
+    padding: 0px 0;
 }
 
 .linkContainer:hover {
@@ -71,24 +69,37 @@
 }
 
 .nav {
+    min-width: 1000px;
     background: purple;
     margin: 0;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding: 5px;
     font-size: 20px;
+    line-height: 30px;
 }
 
 .navButton {
-    overflow: hidden;
+    margin: 2px 0 2px 0!important;
 }
 
-.navButton .line1 {
+
+.navProfile {
+    min-width: 20px;
+}
+
+.navProfile .line1,
+.navProfile .line2 {
+}
+
+.navProfile .line1 {
     font-size: 12px;
-    display: inline-block;
+    position: absolute;
+    top: 10px;
+    min-width: 80px;
 }
 
-.navButton .line2 {
+.navProfile .line2 {
     font-size: 14px;
     font-weight: bold;
-    display: inline-block;
+    position: relative;
+    top: 6px;
 }

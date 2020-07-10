@@ -20,7 +20,7 @@ function Nav({ history }: { history: History }) {
     }
 
     return (
-        <nav className={styles.nav}>
+        <div className={styles.nav}>
             <Link
                 className={classNames(
                     styles.link,
@@ -61,17 +61,20 @@ function Nav({ history }: { history: History }) {
                     styles.link,
                     styles.navButton,
                     styles.navItem,
+                    styles.navProfile,
                 )}
                 to="/profile"
             >
-                <span className={styles.line1}>
-                    Olá, empresa.
-                </span>
+                <div className={styles.line1}>
+                    <span>
+                        Olá, empresa
+                    </span>
+                </div>
                 <span className={styles.line2}>
                     Ver ações solicitadas
                 </span>
             </Link>
-        </nav>
+        </div >
     );
 }
 
