@@ -1,50 +1,19 @@
 .body {
+    display: table;
     margin-left: 30px;
+    min-width: 800px;
 }
 
 .filter {
-    float: left;
+    display: table-cell;
     width: 20%;
+    min-width: 200px;
 }
 
 .el {
-    float: right;
+    display: table-cell;
     width: 80%;
-}
-
-.ordering {
-    font-size: inherit;
-    text-decoration: underline;
-    -o-appearance: none;
-    -ms-appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border: none;
-    padding: 0!important;
-    background-color: lightpink;
-}
-
-.ordering option {
-    color: green;
-    cursor: pointer;
-    user-select: none;
-    background: rgba(0,0,0,0.1);
-}
-
-.ordering:active,
-.ordering:focus,
-.reverse:active,
-.reverse:focus {
-    border: none;
-    outline: none!important;
-}
-
-.reverse {
-    font-size: inherit;
-    background: none!important;
-    border: none;
-    padding: 0!important;
+    min-width: 500px;
 }
 
 .listHeader {
@@ -53,13 +22,14 @@
 
 .listHeader p {
     display: inline-block;
-    width: 70%;
+    width: 60%;
     padding: 0;
     margin: 0;
     overflow-wrap: break-word;
 }
 
-.listHeader div {
+.listHeaderRight {
     display: inline-block;
+    min-width: 190px;
     float: right;
 }
