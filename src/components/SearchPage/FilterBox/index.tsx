@@ -2,7 +2,38 @@ import React, { Dispatch, useState, useEffect } from 'react';
 import { Category, TCategory } from '../../../models/ActionModel';
 import Box from '../../Box';
 
+import { Set } from 'immutable';
+
 import styles from './FilterBox.module.css';
+
+export type TFilterState = { capacity: number | undefined, duration: number | undefined, categories: Set<string> };
+
+export type TFilterAction =
+    | { type: 'include_cat', payload: string }
+    | { type: 'remove_cat', payload: string }
+    | { type: 'change_capacity', payload: number }
+    | { type: 'change_duration', payload: number }
+
+export function filterReducer(state: TFilterState, action: TFilterAction) {
+    switch (action.type) {
+        case 'include_cat':
+            return {
+                ...state,
+                categories: state.categories.add(action.payload)
+            };
+        case 'remove_cat':
+            return {
+                ...state,
+                categories: state.categories.delete(action.payload)
+            };
+        case 'change_capacity':
+            return { ...state, capacity: action.payload };
+        case 'change_duration':
+            return { ...state, duration: action.payload };
+        default:
+            throw new Error('Undefined type of action');
+    }
+}
 
 function FilterBox({ changeFilters }: { changeFilters: Dispatch<any> }) {
 

@@ -5,8 +5,7 @@ import { Set, List } from 'immutable';
 
 import ActionList from '../ActionList';
 import { fetchActionsByAttrs } from '../../services/api';
-import FilterBox from './FilterBox';
-import { Category } from '../../models/ActionModel';
+import FilterBox, { TFilterState, filterReducer } from './FilterBox';
 import Box from '../Box';
 
 import styles from './SearchPage.module.css';
@@ -16,31 +15,8 @@ function useQuery() {
     return new URLSearchParams(useLocation().search);
 }
 
-export type TState = { capacity: number | undefined, duration: number | undefined, categories: Set<Category> };
-
-function reducer(state: TState, action: any) {
-    switch (action.type) {
-        case 'include_cat':
-            return {
-                ...state,
-                categories: state.categories.add(action.payload)
-            };
-        case 'remove_cat':
-            return {
-                ...state,
-                categories: state.categories.delete(action.payload)
-            };
-        case 'change_capacity':
-            return { ...state, capacity: action.payload };
-        case 'change_duration':
-            return { ...state, duration: action.payload };
-        default:
-            throw new Error('Undefined type of action');
-    }
-}
-
 function SearchPage() {
-    const initialState: TState = {
+    const initialState: TFilterState = {
         capacity: undefined,
         duration: undefined,
         categories: Set()
@@ -48,7 +24,7 @@ function SearchPage() {
 
     const sortInitialState = { sortAttr: 'name', reverse: false };
 
-    const [state, dispatch] = useReducer(reducer, initialState);
+    const [state, dispatch] = useReducer(filterReducer, initialState);
 
     const [sortState, sortDispatch] = useReducer(
         OrderByReducer,
