@@ -29,9 +29,6 @@ function Profile() {
     return (
         <div className={styles.main}>
             <h2>Olá, empresa.</h2>
-            <Link to="/search">
-                Ver todas as ações disponíveis.
-                          </Link>
             <Box title="Ações solicitadas">
                 {actions.size > 0 ?
                     (<div>

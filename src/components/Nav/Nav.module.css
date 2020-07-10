@@ -71,7 +71,8 @@
     min-width: 1000px;
     background: purple;
     margin: 0;
-    padding: 5px;
+    margin: 0 -30px;
+    padding: 2px;
     font-size: 20px;
     line-height: 30px;
 }
