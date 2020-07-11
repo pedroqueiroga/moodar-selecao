@@ -1,5 +1,6 @@
 import React, { useReducer, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Location } from 'history';
 
 import { Set, List } from 'immutable';
 
@@ -13,7 +14,7 @@ import OrderBy, { OrderByReducer, TOrderByReducerState, TOrderByOption } from '.
 import Header from '../ActionList/Header';
 import ActionModel from '../../models/ActionModel';
 
-function SearchPage({ location }: { location: any }) {
+function SearchPage({ location }: { location: Location }) {
     const [initialIndex, setInitialIndex] = useState(1);
     const [endIndex, setEndIndex] = useState(NaN);
 
@@ -52,7 +53,7 @@ function SearchPage({ location }: { location: any }) {
         setQueries(
             Set(cleanLoc
                 .split(' ')
-                .filter((query: []) => query.length > 0) || [])
+                .filter(query => query.length > 0) || [])
         );
     }, [location]);
 
