@@ -12,10 +12,13 @@ function ActionItem({ action }: ActionItemProp) {
             className={styles.link}
             to={`actions/${action.id}/${action.slug}`}
         >
-            <div>
-                <p>{action.title} - {action.category}</p>
-                <p>Duração: {action.duration} minutos. Audiência de até {action.capacity} pessoas.</p>
-            </div >
+            <p className={styles.line1}>{action.title} - {action.category}</p>
+            <p
+                className={styles.line2}
+            >
+                Duração: {action.duration} minutos. Audiência de até {action
+                    .capacity} pessoas.
+            </p>
         </Link>
     )
 }
