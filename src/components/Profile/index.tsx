@@ -8,6 +8,7 @@ import { fetchActionsByIds } from '../../services/api';
 import styles from './Profile.module.css';
 import Box from '../Box';
 import OrderBy, { OrderByReducer, TOrderByReducerState } from '../ActionList/OrderBy';
+import Header from '../ActionList/Header';
 
 function Profile() {
     const [state] = useGlobalState();
@@ -25,22 +26,32 @@ function Profile() {
         sortState.reverse
     );
 
+    const orderByComponent = (
+        <OrderBy
+            defaultValue={initialState.sortAttr}
+            options={List([
+                { value: 'name', text: 'Nome' },
+                { value: 'duration', text: 'Duração' },
+                { value: 'capacity', text: 'Audiência' },
+            ])}
+            dispatch={dispatch}
+            isDescend={sortState.reverse}
+        />
+    );
+
     return (
         <div className={styles.main}>
             <h2>Olá, empresa.</h2>
             <Box title="Ações solicitadas">
                 {actions.size > 0 ?
                     (<div>
-                        <OrderBy
-                            className={styles.orderBy}
-                            defaultValue={initialState.sortAttr}
-                            options={List([
-                                { value: 'name', text: 'Nome' },
-                                { value: 'duration', text: 'Duração' },
-                                { value: 'capacity', text: 'Audiência' },
-                            ])}
-                            dispatch={dispatch}
-                            isDescend={sortState.reverse}
+                        <Header
+                            initialIndex={1}
+                            endIndex={50}
+                            listLength={actions.size}
+                            prevPageCallBack={() => console.log('hi')}
+                            nextPageCallBack={() => console.log('hi')}
+                            orderBy={orderByComponent}
                         />
                         < ActionList actions={actions} />
                     </div>) :

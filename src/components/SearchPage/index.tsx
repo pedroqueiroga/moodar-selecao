@@ -10,6 +10,7 @@ import Box from '../Box';
 
 import styles from './SearchPage.module.css';
 import OrderBy, { OrderByReducer } from '../ActionList/OrderBy';
+import Header from '../ActionList/Header';
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -80,6 +81,19 @@ function SearchPage() {
             null
     );
 
+    const orderByComponent = (
+        <OrderBy
+            defaultValue={sortInitialState.sortAttr}
+            options={List([
+                { value: 'name', text: 'Nome' },
+                { value: 'duration', text: 'Duração' },
+                { value: 'capacity', text: 'Audiência' },
+            ])}
+            dispatch={sortDispatch}
+            isDescend={sortState.reverse}
+        />
+    );
+
     return (
         <div className={styles.body}>
             <div className={styles.filter}>
@@ -97,19 +111,21 @@ function SearchPage() {
                         {resultP}
                         {messageP}
                         {cleanQueries}
-                        <OrderBy
-                            className={styles.listHeaderRight}
-                            defaultValue={sortInitialState.sortAttr}
-                            options={List([
-                                { value: 'name', text: 'Nome' },
-                                { value: 'duration', text: 'Duração' },
-                                { value: 'capacity', text: 'Audiência' },
-                            ])}
-                            dispatch={sortDispatch}
-                            isDescend={sortState.reverse}
-                        />
                     </div>
-                    <ActionList actions={actions} />
+                    {actions.size > 0 ?
+                        (
+                            <div>
+                                <Header
+                                    initialIndex={1}
+                                    endIndex={50}
+                                    listLength={actions.size}
+                                    prevPageCallBack={() => console.log('hi')}
+                                    nextPageCallBack={() => console.log('hi')}
+                                    orderBy={orderByComponent}
+                                />
+                                <ActionList actions={actions} />
+                            </div>
+                        ) : null}
                 </Box>
             </div>
         </div>

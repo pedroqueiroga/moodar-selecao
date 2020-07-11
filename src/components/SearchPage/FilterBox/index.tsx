@@ -1,10 +1,14 @@
 import React, { Dispatch, useState, useEffect } from 'react';
+
+import classNames from 'classnames';
+
 import { Category, TCategory } from '../../../models/ActionModel';
 import Box from '../../Box';
 
 import { Set } from 'immutable';
 
 import styles from './FilterBox.module.css';
+import buttonStyles from '../../Button.module.css';
 
 export type TFilterState = {
     capacity: number | undefined,
@@ -115,7 +119,10 @@ function FilterBox({ changeFilters }: { changeFilters: Dispatch<TFilterAction> }
                 <input
                     type="button"
                     value="X"
-                    className={styles.cleanFilter}
+                    className={classNames(
+                        buttonStyles.button,
+                        styles.cleanFilter,
+                    )}
                     onClick={() => setCapacity(NaN)}
                 />
             </Box>
@@ -131,7 +138,10 @@ function FilterBox({ changeFilters }: { changeFilters: Dispatch<TFilterAction> }
                 <input
                     type="button"
                     value="X"
-                    className={styles.cleanFilter}
+                    className={classNames(
+                        buttonStyles.button,
+                        styles.cleanFilter,
+                    )}
                     onClick={() => setDuration({ ...duration, min: NaN })}
                 />
                 <br />
@@ -147,7 +157,10 @@ function FilterBox({ changeFilters }: { changeFilters: Dispatch<TFilterAction> }
                 <input
                     type="button"
                     value="X"
-                    className={styles.cleanFilter}
+                    className={classNames(
+                        buttonStyles.button,
+                        styles.cleanFilter,
+                    )}
                     onClick={() => setDuration({ ...duration, max: NaN })}
                 />
                 <span> minutos.</span>

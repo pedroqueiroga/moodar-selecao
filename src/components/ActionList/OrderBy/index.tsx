@@ -9,7 +9,6 @@ type TOrderBy = {
     defaultValue: string,
     options: List<{ value: string, text: string }>,
     isDescend: boolean,
-    className: string,
 };
 
 export type TOrderByReducerState = {
@@ -37,7 +36,6 @@ function OrderBy({
     defaultValue,
     options,
     isDescend,
-    className,
 }: TOrderBy) {
 
     function onReverseHandler() {
@@ -49,7 +47,7 @@ function OrderBy({
     }
 
     return (
-        <div className={className}>
+        <div>
             <span>Ordenar por </span>
             <select
                 className={styles.ordering}

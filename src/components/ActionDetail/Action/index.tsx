@@ -1,9 +1,12 @@
 import React from 'react';
 
+import classNames from 'classnames';
+
 import ActionModel from '../../../models/ActionModel';
 import { useGlobalState } from '../../../store/ActionsStore';
 
 import styles from './Action.module.css';
+import buttonStyles from '../../Button.module.css'
 
 type ActionProp = { action: ActionModel };
 
@@ -36,7 +39,10 @@ function Action({ action }: ActionProp) {
             <br />
 
             <input
-                className={styles.button}
+                className={classNames(
+                    buttonStyles.button,
+                    styles.button,
+                )}
                 type="button"
                 value={buttonText}
                 onClick={onClickHandler}

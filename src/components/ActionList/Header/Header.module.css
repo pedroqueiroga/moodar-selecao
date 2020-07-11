@@ -1,0 +1,30 @@
+.container {
+    margin: 0 0 5px 0!important;
+    padding: 0!important;
+    height: 25px;
+    line-height: 25px;
+}
+
+.container > div,
+.container > span {
+}
+
+.left {
+    float: left;
+    width: 50%;
+}
+.left > span {
+    float: left;
+    margin-right: 10px;
+}
+
+.right {
+    min-width: 190px;
+    float: right;
+}
+
+.button {
+    font-size: inherit;
+    font-weight: bold;
+}
+
