@@ -7,7 +7,7 @@ import { useGlobalState } from '../../store/ActionsStore';
 import { fetchActionsByIds } from '../../services/api';
 import styles from './Profile.module.css';
 import Box from '../Box';
-import OrderBy, { OrderByReducer, TOrderByReducerState } from '../ActionList/OrderBy';
+import OrderBy, { OrderByReducer, TOrderByReducerState, TOrderByOption } from '../ActionList/OrderBy';
 import Header from '../ActionList/Header';
 import ActionModel from '../../models/ActionModel';
 
@@ -46,10 +46,11 @@ function Profile() {
         <OrderBy
             defaultValue={initialState.sortAttr}
             options={List([
-                { value: 'name', text: 'Nome' },
+                { value: 'title', text: 'Título' },
+                { value: 'category', text: 'Categoria' },
                 { value: 'duration', text: 'Duração' },
                 { value: 'capacity', text: 'Audiência' },
-            ])}
+            ] as TOrderByOption[])}
             dispatch={dispatch}
             isDescend={sortState.reverse}
         />

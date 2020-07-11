@@ -3,22 +3,29 @@ import React from 'react';
 import { List } from 'immutable';
 
 import styles from './OrderBy.module.css';
+import ActionModel from '../../../models/ActionModel';
+
+
+export type TOrderByOption = {
+    value: keyof ActionModel | 'name',
+    text: string
+};
 
 type TOrderBy = {
     dispatch: any,
     defaultValue: string,
-    options: List<{ value: string, text: string }>,
+    options: List<TOrderByOption>,
     isDescend: boolean,
 };
 
 export type TOrderByReducerState = {
-    sortAttr: string,
+    sortAttr: keyof ActionModel | 'name',
     reverse: boolean
 }
 
 export type TOrderByReducerAction =
     | { type: 'reverse' }
-    | { type: 'sort_attribute', payload: string }
+    | { type: 'sort_attribute', payload: keyof ActionModel | 'name' }
 
 export function OrderByReducer(state: TOrderByReducerState, action: TOrderByReducerAction): TOrderByReducerState {
     switch (action.type) {

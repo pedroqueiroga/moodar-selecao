@@ -9,7 +9,7 @@ import FilterBox, { TFilterState, filterReducer } from './FilterBox';
 import Box from '../Box';
 
 import styles from './SearchPage.module.css';
-import OrderBy, { OrderByReducer } from '../ActionList/OrderBy';
+import OrderBy, { OrderByReducer, TOrderByReducerState, TOrderByOption } from '../ActionList/OrderBy';
 import Header from '../ActionList/Header';
 import ActionModel from '../../models/ActionModel';
 
@@ -30,7 +30,10 @@ function SearchPage({ location }: { location: any }) {
         categories: Set()
     };
 
-    const sortInitialState = { sortAttr: 'name', reverse: false };
+    const sortInitialState: TOrderByReducerState = {
+        sortAttr: 'name',
+        reverse: false,
+    };
 
     const [state, dispatch] = useReducer(filterReducer, initialState);
 
@@ -113,10 +116,11 @@ function SearchPage({ location }: { location: any }) {
         <OrderBy
             defaultValue={sortInitialState.sortAttr}
             options={List([
-                { value: 'name', text: 'Nome' },
+                { value: 'title', text: 'Título' },
+                { value: 'category', text: 'Categoria' },
                 { value: 'duration', text: 'Duração' },
                 { value: 'capacity', text: 'Audiência' },
-            ])}
+            ] as TOrderByOption[])}
             dispatch={sortDispatch}
             isDescend={sortState.reverse}
         />

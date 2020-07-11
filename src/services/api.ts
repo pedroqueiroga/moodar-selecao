@@ -1,6 +1,9 @@
 import { Set, List } from 'immutable';
 
-import ActionModel, { compareActionsByName, compareActionsByCapacity, compareActionsByDuration } from '../models/ActionModel';
+import ActionModel, {
+    compareActionsByName,
+    compareActions
+} from '../models/ActionModel';
 import allActions from './ActionList';
 
 function normalizeString(str: string) {
@@ -21,7 +24,7 @@ export function fetchActionsByAttrs(
     maximumCapacity: number = NaN,
     minimumDuration: number = NaN,
     maximumDuration: number = NaN,
-    sortBy?: string,
+    sortBy?: keyof ActionModel | 'name',
     reverse: boolean = false,
     initialIndex?: number,
     endIndex?: number,
@@ -60,7 +63,7 @@ export function fetchActionsByAttrs(
 
 export function fetchActionsByIds(
     ids: Set<number>,
-    sortBy?: string,
+    sortBy?: keyof ActionModel | 'name',
     reverse: boolean = false,
     initialIndex?: number,
     endIndex?: number,
@@ -85,7 +88,7 @@ export function fetchActionById(id: number): ActionModel {
 
 export function sortActions(
     actions: List<ActionModel>,
-    sortedBy: string,
+    sortedBy: keyof ActionModel | 'name',
     reverse: boolean = false,
 ): List<ActionModel> {
     const compare = (cmp: Function) =>
@@ -95,11 +98,7 @@ export function sortActions(
     switch (sortedBy) {
         case 'name':
             return actions.sort(compare(compareActionsByName));
-        case 'capacity':
-            return actions.sort(compare(compareActionsByCapacity));
-        case 'duration':
-            return actions.sort(compare(compareActionsByDuration));
         default:
-            throw new Error('Invalid sort function');
+            return actions.sort(compare(compareActions(sortedBy)));
     }
 }
