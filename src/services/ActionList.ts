@@ -11,7 +11,7 @@ const allActions: List<ActionModel> = List([
         description: loremIpsum,
         category: Category.WebinarOnline,
         duration: 120,
-        capacity: 10
+        capacity: 10,
     },
     {
         id: 2,
@@ -29,7 +29,7 @@ const allActions: List<ActionModel> = List([
         description: loremIpsum,
         category: Category.PalestraPresencial,
         duration: 90,
-        capacity: 100
+        capacity: 100,
     },
     {
         id: 4,
@@ -38,8 +38,113 @@ const allActions: List<ActionModel> = List([
         description: loremIpsum,
         category: Category.PalestraPresencial,
         duration: 60,
-        capacity: 100
+        capacity: 100,
+    },
+    {
+        id: 5,
+        title: 'Ansiedade e Depressão',
+        slug: 'ansiedade-depressao',
+        description: loremIpsum,
+        category: Category.PalestraPresencial,
+        duration: 30,
+        capacity: 20,
+    },
+    {
+        id: 6,
+        title: 'Como Lidar com Estresse',
+        slug: 'como-lidar-com-estresse',
+        description: loremIpsum,
+        category: Category.Treinamento,
+        duration: 450,
+        capacity: 10,
+    },
+    {
+        id: 7,
+        title: 'Comunicação Não Violenta',
+        slug: 'comunicacao-nao-violenta',
+        description: loremIpsum,
+        category: Category.WebinarOnline,
+        duration: 30,
+        capacity: 100,
+    },
+    {
+        id: 8,
+        title: 'Amor e Amizade',
+        slug: 'amor-amizade',
+        description: loremIpsum,
+        category: Category.WebinarOnline,
+        duration: 45,
+        capacity: 200,
     },
 ]);
 
-export default allActions;
+const takenIds = [1, 2, 3, 4, 5, 6, 7, 8];
+
+function choose(l: List<any>) {
+    return l.get(Math.floor(Math.random() * l.size));
+}
+
+const alphabet = List('abcdefghijklmnopqrstuvwxyz'.split(''));
+
+function randomWord() {
+    let result = choose(alphabet).toUpperCase();
+    while (true) {
+        if (result.length > 4 &&
+            Math.random() < 0.5) {
+            return result;
+        } else {
+            result += choose(alphabet)
+        }
+    }
+}
+
+function randomTitle() {
+    let result = randomWord();
+    while (true) {
+        if (Math.random() < 0.4) {
+            return result;
+        } else {
+            result += ` ${randomWord()}`;
+        }
+    }
+}
+
+function slugify(s: string) {
+    return s.replace(/ /g, '-').toLowerCase();
+}
+
+function randomAction(): ActionModel {
+    let takeId = 0;
+    while (takenIds.includes(takeId)) {
+        takeId = Math.round(Math.random() * 1000);
+    }
+    takenIds.push(takeId);
+    const title = randomTitle();
+    const category = Category[
+        choose(List(Object.keys(Category))) as keyof typeof Category
+    ];
+    return {
+        capacity: Math.round(Math.random() * 100),
+        category,
+        description: loremIpsum,
+        duration: Math.round(Math.random() * 600),
+        id: takeId,
+        slug: slugify(title),
+        title,
+    }
+}
+
+function randomActions() {
+    const actions = [randomAction()];
+    while (true) {
+        if (Math.random() < 0.05) {
+            return actions
+        } else {
+            actions.push(randomAction());
+        }
+    }
+}
+
+const moreActions = allActions.concat(List(randomActions()));
+
+export default moreActions;
