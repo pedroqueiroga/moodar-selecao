@@ -35,10 +35,11 @@ function Header({
                     <input
                         className={classNames(
                             buttonStyle.button,
-                            styles.button
+                            styles.button,
                         )}
                         type="button"
                         value="<"
+                        disabled={initialIndex === 1}
                         onClick={prevPageCallBack}
                     />
                     <input
@@ -48,6 +49,7 @@ function Header({
                         )}
                         type="button"
                         value=">"
+                        disabled={endIndex === listLength}
                         onClick={nextPageCallBack}
                     />
                 </div>

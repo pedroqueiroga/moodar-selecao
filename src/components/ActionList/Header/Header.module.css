@@ -16,6 +16,7 @@
 .left > span {
     float: left;
     margin-right: 10px;
+    min-width: 123px;
 }
 
 .right {
@@ -26,5 +27,12 @@
 .button {
     font-size: inherit;
     font-weight: bold;
+}
+
+
+.button:disabled {
+    color: black;
+    background-color: transparent!important;
+    cursor: default;
 }
 

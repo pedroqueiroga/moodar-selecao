@@ -1,5 +1,5 @@
-import React, { useReducer, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useReducer, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { Set, List } from 'immutable';
 
@@ -11,12 +11,19 @@ import Box from '../Box';
 import styles from './SearchPage.module.css';
 import OrderBy, { OrderByReducer } from '../ActionList/OrderBy';
 import Header from '../ActionList/Header';
+import ActionModel from '../../models/ActionModel';
 
-function useQuery() {
-    return new URLSearchParams(useLocation().search);
-}
+function SearchPage({ location }: { location: any }) {
+    const [initialIndex, setInitialIndex] = useState(1);
+    const [endIndex, setEndIndex] = useState(NaN);
 
-function SearchPage() {
+    const [resultState, setResultState] = useState({
+        result: List<ActionModel>(),
+        nEntries: NaN,
+    });
+
+    const [queries, setQueries] = useState(Set<string>());
+
     const initialState: TFilterState = {
         capacity: undefined,
         duration: undefined,
@@ -33,23 +40,42 @@ function SearchPage() {
     );
 
     useEffect(() => {
-        console.log('queries', queries);
         console.log('state', state);
     })
 
-    const queries = Set(useQuery().get("q")?.trim().replace(/ +/g, ' ')
-        .split(' ')
-        .filter(query => query.length > 0) || []);
+    useEffect(() => {
+        const loc = location.search.slice(location.search.indexOf('q=') + 2);
+        const cleanLoc = loc?.trim().replace(/ +/g, ' ');
+        setQueries(
+            Set(cleanLoc
+                .split(' ')
+                .filter((query: []) => query.length > 0) || [])
+        );
+    }, [location]);
 
-    const actions = fetchActionsByAttrs(
-        queries,
-        state.categories,
-        state.capacity,
-        state.duration?.min,
-        state.duration?.max,
-        sortState.sortAttr,
-        sortState.reverse,
-    );
+    useEffect(() => {
+        console.log('state, sortState or queries changed');
+        console.log(state, sortState, queries);
+        const { result, nEntries } = fetchActionsByAttrs(
+            queries,
+            state.categories,
+            state.capacity,
+            state.duration?.min,
+            state.duration?.max,
+            sortState.sortAttr,
+            sortState.reverse,
+            initialIndex - 1,
+            initialIndex + (resultsPerPage - 1),
+        );
+        setResultState({ result, nEntries });
+        setEndIndex(initialIndex + result.size - 1);
+    }, [state, sortState, queries, initialIndex]);
+
+    useEffect(() => {
+        console.log('component did mount');
+    }, []);
+
+    const { result: actions, nEntries } = resultState;
 
     const noResult = queries.size > 0 ? ` para: ${queries?.join(' ')}` : '';
 
@@ -80,6 +106,8 @@ function SearchPage() {
             <p>Tente remover filtros ou buscar outros termos.</p> :
             null
     );
+
+    const resultsPerPage = 10;
 
     const orderByComponent = (
         <OrderBy
@@ -116,11 +144,15 @@ function SearchPage() {
                         (
                             <div>
                                 <Header
-                                    initialIndex={1}
-                                    endIndex={50}
-                                    listLength={actions.size}
-                                    prevPageCallBack={() => console.log('hi')}
-                                    nextPageCallBack={() => console.log('hi')}
+                                    initialIndex={initialIndex}
+                                    endIndex={endIndex}
+                                    listLength={nEntries}
+                                    prevPageCallBack={() =>
+                                        setInitialIndex(initialIndex - resultsPerPage)
+                                    }
+                                    nextPageCallBack={() =>
+                                        setInitialIndex(initialIndex + resultsPerPage)
+                                    }
                                     orderBy={orderByComponent}
                                 />
                                 <ActionList actions={actions} />

@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useState, useEffect } from 'react';
 
 import { List } from 'immutable';
 
@@ -9,6 +9,7 @@ import styles from './Profile.module.css';
 import Box from '../Box';
 import OrderBy, { OrderByReducer, TOrderByReducerState } from '../ActionList/OrderBy';
 import Header from '../ActionList/Header';
+import ActionModel from '../../models/ActionModel';
 
 function Profile() {
     const [state] = useGlobalState();
@@ -18,13 +19,28 @@ function Profile() {
         reverse: false,
     };
 
+    const [initialIndex, setInitialIndex] = useState(1);
+    const [endIndex, setEndIndex] = useState(NaN);
+
+    const [resultState, setResultState] = useState({
+        result: List<ActionModel>(),
+        nEntries: NaN,
+    });
+
     const [sortState, dispatch] = useReducer(OrderByReducer, initialState);
 
-    const actions = fetchActionsByIds(
-        state.actions,
-        sortState.sortAttr,
-        sortState.reverse
-    );
+    useEffect(() => {
+        console.log('state, sortState or queries changed');
+        const { result, nEntries } = fetchActionsByIds(
+            state.actions,
+            sortState.sortAttr,
+            sortState.reverse,
+            initialIndex - 1,
+            initialIndex + (resultsPerPage - 1),
+        );
+        setResultState({ result, nEntries });
+        setEndIndex(initialIndex + result.size - 1);
+    }, [state, sortState, initialIndex]);
 
     const orderByComponent = (
         <OrderBy
@@ -39,6 +55,10 @@ function Profile() {
         />
     );
 
+    const { result: actions, nEntries } = resultState;
+
+    const resultsPerPage = 10;
+
     return (
         <div className={styles.main}>
             <h2>Olá, empresa.</h2>
@@ -46,11 +66,15 @@ function Profile() {
                 {actions.size > 0 ?
                     (<div>
                         <Header
-                            initialIndex={1}
-                            endIndex={50}
-                            listLength={actions.size}
-                            prevPageCallBack={() => console.log('hi')}
-                            nextPageCallBack={() => console.log('hi')}
+                            initialIndex={initialIndex}
+                            endIndex={endIndex}
+                            listLength={nEntries}
+                            prevPageCallBack={() =>
+                                setInitialIndex(initialIndex - resultsPerPage)
+                            }
+                            nextPageCallBack={() =>
+                                setInitialIndex(initialIndex + resultsPerPage)
+                            }
                             orderBy={orderByComponent}
                         />
                         < ActionList actions={actions} />

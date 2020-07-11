@@ -10,6 +10,11 @@ function normalizeString(str: string) {
         .toUpperCase();
 }
 
+type TFetchResult = {
+    result: List<ActionModel>,
+    nEntries: number,
+};
+
 export function fetchActionsByAttrs(
     titlesCategories: Set<string> = Set(),
     mustHaveCats: Set<string> = Set(),
@@ -18,7 +23,9 @@ export function fetchActionsByAttrs(
     maximumDuration: number = NaN,
     sortBy?: string,
     reverse: boolean = false,
-): List<ActionModel> {
+    initialIndex?: number,
+    endIndex?: number,
+): TFetchResult {
     const cleanTcs = titlesCategories.map(tc => normalizeString(tc));
     const cleanMHC = mustHaveCats.map(cat => normalizeString(cat));
     const filteredActions = allActions.filter(action => {
@@ -41,21 +48,30 @@ export function fetchActionsByAttrs(
             inDurationRange;
     });
 
-    return sortBy ?
+    const allHits = sortBy ?
         sortActions(filteredActions, sortBy, reverse) :
         filteredActions;
+
+    const result = allHits.slice(initialIndex, endIndex);
+
+    return { result, nEntries: allHits.size };
 }
 
 export function fetchActionsByIds(
     ids: Set<number>,
     sortBy?: string,
     reverse: boolean = false,
-): List<ActionModel> {
+    initialIndex?: number,
+    endIndex?: number,
+): TFetchResult {
     const filteredActions = allActions.filter(action => ids.includes(action.id));
 
-    return sortBy ?
+    const allHits = sortBy ?
         sortActions(filteredActions, sortBy, reverse) :
         filteredActions;
+    const result = allHits.slice(initialIndex, endIndex);
+
+    return { result, nEntries: allHits.size }
 }
 
 export function fetchActionById(id: number): ActionModel {

@@ -8,12 +8,12 @@ Aplicativo em React. Mini plataforma de gerenciamento de ações.
   * [x] Caixa de texto para buscar por palavra-chave (título / categoria) **
     * [ ] Busca em tempo real. *
   * [x] Botão de perfil **
-2. [ ] Página de listagem de ações 
+2. [x] Página de listagem de ações 
   * [x] Barra lateral de de filtragem: categoria, audiência e duração. *
   * [x] Lista de ações (filtrada ou completa) **
     * [x] Clicar numa ação leva para a página de detalhe dessa ação
     * [x] Ordena lista.
-    * [ ] Paginação.
+    * [x] Paginação.
 3. [ ] Página de detalhe de ação 
   * [x] Título. **
   * [x] Categoria a qual pertence, audiência, duração. **
