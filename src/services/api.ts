@@ -35,7 +35,8 @@ export function fetchActionsByAttrs(
         const containsMHC = cleanMHC.size === 0 ||
             cleanMHC.find(cat => cleanActionCat.includes(cat));
         const containsTc = cleanTcs.size === 0 ||
-            cleanTcs.find(tc => cleanActionTitle.includes(tc));
+            cleanTcs.find(tc => cleanActionTitle.includes(tc) ||
+                cleanActionCat.includes(tc));
         const respectsMaximumCap = isNaN(maximumCapacity) ||
             (action.capacity <= maximumCapacity);
         const inDurationRange = (isNaN(minimumDuration) ||
