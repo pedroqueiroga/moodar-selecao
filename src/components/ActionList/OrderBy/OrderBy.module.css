@@ -9,6 +9,7 @@
     border: none;
     padding: 0!important;
     background-color: lightpink;
+    color: green;
 }
 
 .ordering option {
@@ -26,9 +27,18 @@
     outline: none!important;
 }
 
+.ordering:hover {
+    cursor: pointer;
+}
+
 .reverse {
+    color: green;
     font-size: inherit;
     background: none!important;
     border: none;
     padding: 0!important;
+}
+
+.reverse:hover {
+    cursor: pointer;
 }
