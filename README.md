@@ -2,9 +2,14 @@
 
 Aplicativo em React. Mini plataforma de gerenciamento de ações.
 
+Para iniciar o servidor dev:
+```bash
+moodar-selecao$ yarn run dev
+```
+
 ### Funcionalidades desenvolvidas:
 
-1. [ ] Barra de navegação (presente em todas as páginas)
+1. [x] Barra de navegação (presente em todas as páginas)
     * [x] Caixa de texto para buscar por palavra-chave (título / categoria) **
         * [ ] Busca em tempo real.
     * [x] Botão de perfil **
