@@ -62,10 +62,6 @@ function FilterBox({ initialState, changeFilters }: {
     });
     const [capacity, setCapacity] = useState(initialState.capacity || NaN);
 
-    useEffect(() => {
-        console.log('duration', duration);
-        console.log('capacity', capacity);
-    });
 
     useEffect(() => {
         changeFilters({ type: 'change_capacity', payload: capacity });

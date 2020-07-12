@@ -57,10 +57,6 @@ function SearchPage({ location }: TProps) {
     );
 
     useEffect(() => {
-        console.log('filterState', filterState);
-    })
-
-    useEffect(() => {
         const loc = location.search.slice(location.search.indexOf('q=') + 2);
         const cleanLoc = loc?.trim().replace(/ +/g, ' ');
         setQueries(
@@ -71,8 +67,6 @@ function SearchPage({ location }: TProps) {
     }, [location]);
 
     useEffect(() => {
-        console.log('filterState, sortState or queries changed');
-        console.log(filterState, sortState, queries);
         const { result, nEntries } = fetchActionsByAttrs(
             queries,
             filterState.categories,

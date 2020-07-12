@@ -45,7 +45,6 @@ function Profile({ location }: TProps) {
     const [sortState, dispatch] = useReducer(OrderByReducer, initialSortState);
 
     useEffect(() => {
-        console.log('state, sortState or queries changed');
         const { result, nEntries } = fetchActionsByIds(
             state.actions,
             sortState.sortAttr,
