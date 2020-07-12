@@ -33,12 +33,12 @@ export function fetchActionsByAttrs(
     let cleanMHC: Set<string>;
     try {
         cleanTcs = titlesCategories.map(tc => normalizeString(tc));
-    } catch {
+    } catch (e) {
         cleanTcs = Set();
     }
     try {
         cleanMHC = mustHaveCats.map(cat => normalizeString(cat));
-    } catch {
+    } catch (e) {
         cleanMHC = Set();
     }
     const filteredActions = allActions.filter(action => {
