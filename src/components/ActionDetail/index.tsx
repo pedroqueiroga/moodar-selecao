@@ -31,7 +31,7 @@ function ActionDetail() {
                 default:
                     throw new Error('invalid action type');
             }
-        }, wholePageState.nEntries);
+        }, wholePageState?.nEntries);
 
     const toObj = wholePageState?.tag === 'search' ?
         {
