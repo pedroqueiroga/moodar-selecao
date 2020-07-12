@@ -83,10 +83,10 @@ function SearchPage({ location }: TProps) {
     }, [filterState, sortState, queries, initialIndex]);
 
     useEffect(() => {
-        if (resultState.result.size === 0 && nEntries > 0) {
+        if (resultState.result.size === 0 && resultState.nEntries > 0) {
             setInitialIndex(1);
         }
-    }, [resultState.result]);
+    }, [resultState]);
 
     useEffect(() => {
         console.log('component did mount');

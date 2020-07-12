@@ -16,7 +16,7 @@ export type TFilterState = {
         min: number,
         max: number
     }
-    categories: Set<string>
+    categories: Set<string>,
 };
 
 export type TFilterAction =
@@ -31,16 +31,20 @@ export type TFilterAction =
     }
 
 export function filterReducer(state: TFilterState, action: TFilterAction) {
+    // Typescript is kinda acting up.
+    // state.categories should never arrive as something other than a set
+    // but sometimes it does.
+    const cat: Set<string> = validateSet(state.categories);
     switch (action.type) {
         case 'include_cat':
             return {
                 ...state,
-                categories: state.categories.add(action.payload)
+                categories: cat.add(action.payload)
             };
         case 'remove_cat':
             return {
                 ...state,
-                categories: state.categories.delete(action.payload)
+                categories: cat.delete(action.payload)
             };
         case 'change_capacity':
             return { ...state, capacity: action.payload };
@@ -49,6 +53,10 @@ export function filterReducer(state: TFilterState, action: TFilterAction) {
         default:
             throw new Error('Undefined type of action');
     }
+}
+
+function validateSet(s: any): Set<string> {
+    return Set.isSet(s) ? s : Set<string>();
 }
 
 function FilterBox({ initialState, changeFilters }: {
@@ -62,6 +70,9 @@ function FilterBox({ initialState, changeFilters }: {
     });
     const [capacity, setCapacity] = useState(initialState.capacity || NaN);
 
+    const [categories, setCategories] = useState(
+        validateSet(initialState.categories)
+    );
 
     useEffect(() => {
         changeFilters({ type: 'change_capacity', payload: capacity });
@@ -78,33 +89,40 @@ function FilterBox({ initialState, changeFilters }: {
     const allCategories = getMembers(Category);
 
     function onCheckHandler(e: React.ChangeEvent<HTMLInputElement>) {
+        const cat: string = allCategories[parseInt(e.target.id)];
         if (e.target.checked) {
+            setCategories(categories.add(cat));
             changeFilters({
                 type: 'include_cat',
-                payload: allCategories[parseInt(e.target.id)]
+                payload: cat,
             });
         } else {
+            setCategories(categories.delete(cat));
             changeFilters({
                 type: 'remove_cat',
-                payload: allCategories[parseInt(e.target.id)]
+                payload: cat,
             });
         }
     }
 
     function onCapacityChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
-        const newCapacity: number = parseInt(e.target.value)
+        const newCapacity: number = parseInt(e.currentTarget.value)
         setCapacity(newCapacity);
     }
 
     function onMinDurationChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
-        const newMin: number = parseInt(e.target.value);
+        const newMin: number = parseInt(e.currentTarget.value);
         const newMax = duration.max < newMin ? newMin : duration.max;
         setDuration({ max: newMax, min: newMin });
     }
 
     function onMaxDurationChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
-        const newMax: number = parseInt(e.target.value);
+        const newMax: number = parseInt(e.currentTarget.value);
         setDuration({ ...duration, max: newMax });
+    }
+
+    function validateNumber(n: number) {
+        return isNaN(n) ? '' : n.toString();
     }
 
     return (
@@ -115,7 +133,7 @@ function FilterBox({ initialState, changeFilters }: {
                     className={styles.inputNumber}
                     type="number"
                     min={0}
-                    value={capacity.toString()}
+                    value={validateNumber(capacity)}
                     onChange={onCapacityChangeHandler}
                 />
                 <input
@@ -134,7 +152,7 @@ function FilterBox({ initialState, changeFilters }: {
                     className={styles.inputNumber}
                     type="number"
                     min={0}
-                    value={duration.min.toString()}
+                    value={validateNumber(duration.min)}
                     onChange={onMinDurationChangeHandler}
                 />
                 <input
@@ -152,8 +170,8 @@ function FilterBox({ initialState, changeFilters }: {
                 <input
                     className={styles.inputNumber}
                     type="number"
-                    min={duration.min.toString()}
-                    value={duration.max.toString()}
+                    min={validateNumber(duration.min) || 0}
+                    value={validateNumber(duration.max)}
                     onChange={onMaxDurationChangeHandler}
                 />
                 <input
@@ -177,7 +195,7 @@ function FilterBox({ initialState, changeFilters }: {
                             type="checkbox"
                             id={idx.toString()}
                             name={cat}
-                            checked={Set.isSet(initialState.categories) && initialState.categories.includes(cat)}
+                            checked={categories.includes(cat)}
                             onChange={onCheckHandler}
                         />
                     </label>
