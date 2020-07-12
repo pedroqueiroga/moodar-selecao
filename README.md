@@ -14,14 +14,13 @@ Aplicativo em React. Mini plataforma de gerenciamento de ações.
         * [x] Clicar numa ação leva para a página de detalhe dessa ação
         * [x] Ordena lista.
         * [x] Paginação.
-3. [ ] Página de detalhe de ação 
+3. [x] Página de detalhe de ação 
     * [x] Título. **
     * [x] Categoria a qual pertence, audiência, duração. **
-        * [ ] Duração human-friendly. *
     * [x] Descrição da ação. **
     * [x] Botões:
         * [x] Solicitar ação    (se a ação não foi solicitada) **
         * [x] Cancelar ação     (se a ação foi solicitada) **
-4. [ ] "Perfil" da empresa - homepage 
+4. [x] "Perfil" da empresa - homepage 
     * [x] Lista de ações solicitadas **
         * [x] Acompanhar ação - leva para a página de detalhe dessa ação **
