@@ -13,9 +13,33 @@ import styles from './SearchPage.module.css';
 import OrderBy, { OrderByReducer, TOrderByReducerState, TOrderByOption } from '../ActionList/OrderBy';
 import Header from '../ActionList/Header';
 import ActionModel from '../../models/ActionModel';
+import { TSearchPageState } from '../ActionList/ActionItem';
 
-function SearchPage({ location }: { location: Location }) {
-    const [initialIndex, setInitialIndex] = useState(1);
+type TProps = { location: Location }
+
+function SearchPage({ location }: TProps) {
+    let initialIndexState = 1;
+    let initialFilterState: TFilterState = {
+        capacity: undefined,
+        duration: undefined,
+        categories: Set()
+    };
+    let initialSortState: TOrderByReducerState = {
+        sortAttr: 'name',
+        reverse: false,
+    };
+    if (location.state !== undefined) {
+        const {
+            initialIndex,
+            nEntries,
+            sortState,
+            filterState,
+        } = location.state as TSearchPageState;
+        initialIndexState = (initialIndex <= nEntries) ? initialIndex : 1;
+        initialFilterState = filterState;
+        initialSortState = sortState;
+    }
+    const [initialIndex, setInitialIndex] = useState(initialIndexState);
     const [endIndex, setEndIndex] = useState(NaN);
 
     const [resultState, setResultState] = useState({
@@ -25,26 +49,15 @@ function SearchPage({ location }: { location: Location }) {
 
     const [queries, setQueries] = useState(Set<string>());
 
-    const initialState: TFilterState = {
-        capacity: undefined,
-        duration: undefined,
-        categories: Set()
-    };
-
-    const sortInitialState: TOrderByReducerState = {
-        sortAttr: 'name',
-        reverse: false,
-    };
-
-    const [state, dispatch] = useReducer(filterReducer, initialState);
+    const [filterState, filterDispatch] = useReducer(filterReducer, initialFilterState);
 
     const [sortState, sortDispatch] = useReducer(
         OrderByReducer,
-        sortInitialState
+        initialSortState
     );
 
     useEffect(() => {
-        console.log('state', state);
+        console.log('filterState', filterState);
     })
 
     useEffect(() => {
@@ -58,14 +71,14 @@ function SearchPage({ location }: { location: Location }) {
     }, [location]);
 
     useEffect(() => {
-        console.log('state, sortState or queries changed');
-        console.log(state, sortState, queries);
+        console.log('filterState, sortState or queries changed');
+        console.log(filterState, sortState, queries);
         const { result, nEntries } = fetchActionsByAttrs(
             queries,
-            state.categories,
-            state.capacity,
-            state.duration?.min,
-            state.duration?.max,
+            filterState.categories,
+            filterState.capacity,
+            filterState.duration?.min,
+            filterState.duration?.max,
             sortState.sortAttr,
             sortState.reverse,
             initialIndex - 1,
@@ -73,7 +86,7 @@ function SearchPage({ location }: { location: Location }) {
         );
         setResultState({ result, nEntries });
         setEndIndex(initialIndex + result.size - 1);
-    }, [state, sortState, queries, initialIndex]);
+    }, [filterState, sortState, queries, initialIndex]);
 
     useEffect(() => {
         console.log('component did mount');
@@ -115,7 +128,7 @@ function SearchPage({ location }: { location: Location }) {
 
     const orderByComponent = (
         <OrderBy
-            defaultValue={sortInitialState.sortAttr}
+            defaultValue={initialSortState.sortAttr}
             options={List([
                 { value: 'title', text: 'Título' },
                 { value: 'category', text: 'Categoria' },
@@ -133,7 +146,10 @@ function SearchPage({ location }: { location: Location }) {
                 <Box
                     title="Filtrar ações"
                 >
-                    <FilterBox changeFilters={dispatch} />
+                    <FilterBox
+                        initialState={filterState}
+                        changeFilters={filterDispatch}
+                    />
                 </Box>
             </div>
             <div className={styles.el}>
@@ -160,7 +176,17 @@ function SearchPage({ location }: { location: Location }) {
                                     }
                                     orderBy={orderByComponent}
                                 />
-                                <ActionList actions={actions} />
+                                <ActionList
+                                    wholePageState={{
+                                        tag: 'search',
+                                        search: location.search,
+                                        filterState: { ...filterState },
+                                        sortState: { ...sortState },
+                                        initialIndex,
+                                        nEntries,
+                                    } as TSearchPageState}
+                                    actions={actions}
+                                />
                             </div>
                         ) : null}
                 </Box>

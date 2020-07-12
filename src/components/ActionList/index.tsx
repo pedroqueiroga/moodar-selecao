@@ -2,14 +2,17 @@ import React from 'react';
 
 import { List } from 'immutable';
 
-import ActionItem from './ActionItem';
+import ActionItem, { TWholePageState } from './ActionItem';
 import ActionModel from '../../models/ActionModel';
 
 import styles from './ActionList.module.css';
 
-type ActionListProps = { actions: List<ActionModel> };
+type ActionListProps = {
+    actions: List<ActionModel>,
+    wholePageState?: TWholePageState,
+};
 
-function ActionList({ actions }: ActionListProps) {
+function ActionList({ actions, wholePageState }: ActionListProps) {
     return (
         <ul className={styles.list}>
             {actions.map((a) =>
@@ -17,7 +20,10 @@ function ActionList({ actions }: ActionListProps) {
                     className={styles.item}
                     key={a.id}
                 >
-                    <ActionItem action={a} />
+                    <ActionItem
+                        wholePageState={wholePageState}
+                        action={a}
+                    />
                 </li>)}
         </ul>
     );

@@ -1,4 +1,5 @@
 import React, { useReducer, useState, useEffect } from 'react';
+import { Location } from 'history';
 
 import { List } from 'immutable';
 
@@ -10,16 +11,30 @@ import Box from '../Box';
 import OrderBy, { OrderByReducer, TOrderByReducerState, TOrderByOption } from '../ActionList/OrderBy';
 import Header from '../ActionList/Header';
 import ActionModel from '../../models/ActionModel';
+import { TProfilePageState } from '../ActionList/ActionItem';
 
-function Profile() {
+type TProps = { location: Location };
+
+function Profile({ location }: TProps) {
     const [state] = useGlobalState();
 
-    const initialState: TOrderByReducerState = {
+    let initialIndexState = 1;
+    let initialSortState: TOrderByReducerState = {
         sortAttr: 'name',
         reverse: false,
     };
 
-    const [initialIndex, setInitialIndex] = useState(1);
+    if (location.state !== undefined) {
+        const {
+            initialIndex,
+            nEntries,
+            sortState,
+        } = location.state as TProfilePageState;
+        initialIndexState = (initialIndex <= nEntries) ? initialIndex : 1;
+        initialSortState = sortState;
+    }
+
+    const [initialIndex, setInitialIndex] = useState(initialIndexState);
     const [endIndex, setEndIndex] = useState(NaN);
 
     const [resultState, setResultState] = useState({
@@ -27,7 +42,7 @@ function Profile() {
         nEntries: NaN,
     });
 
-    const [sortState, dispatch] = useReducer(OrderByReducer, initialState);
+    const [sortState, dispatch] = useReducer(OrderByReducer, initialSortState);
 
     useEffect(() => {
         console.log('state, sortState or queries changed');
@@ -44,7 +59,7 @@ function Profile() {
 
     const orderByComponent = (
         <OrderBy
-            defaultValue={initialState.sortAttr}
+            defaultValue={initialSortState.sortAttr}
             options={List([
                 { value: 'title', text: 'Título' },
                 { value: 'category', text: 'Categoria' },
@@ -78,11 +93,17 @@ function Profile() {
                             }
                             orderBy={orderByComponent}
                         />
-                        < ActionList actions={actions} />
+                        <ActionList
+                            wholePageState={{
+                                tag: 'profile',
+                                sortState: { ...sortState },
+                                initialIndex,
+                                nEntries,
+                            } as TProfilePageState}
+                            actions={actions} />
                     </div>) :
                     <p>Nenhuma ação solicitada.</p>
                 }
-
             </Box>
         </div>
     );

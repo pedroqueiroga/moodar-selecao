@@ -29,8 +29,18 @@ export function fetchActionsByAttrs(
     initialIndex?: number,
     endIndex?: number,
 ): TFetchResult {
-    const cleanTcs = titlesCategories.map(tc => normalizeString(tc));
-    const cleanMHC = mustHaveCats.map(cat => normalizeString(cat));
+    let cleanTcs: Set<string>;
+    let cleanMHC: Set<string>;
+    try {
+        cleanTcs = titlesCategories.map(tc => normalizeString(tc));
+    } catch {
+        cleanTcs = Set();
+    }
+    try {
+        cleanMHC = mustHaveCats.map(cat => normalizeString(cat));
+    } catch {
+        cleanMHC = Set();
+    }
     const filteredActions = allActions.filter(action => {
         const cleanActionTitle = normalizeString(action.title);
         const cleanActionCat = normalizeString(action.category);

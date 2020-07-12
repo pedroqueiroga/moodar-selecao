@@ -51,10 +51,18 @@ export function filterReducer(state: TFilterState, action: TFilterAction) {
     }
 }
 
-function FilterBox({ changeFilters }: { changeFilters: Dispatch<TFilterAction> }) {
+function FilterBox({ initialState, changeFilters }: {
+    initialState: TFilterState,
+    changeFilters: Dispatch<TFilterAction>,
+}) {
 
-    const [duration, setDuration] = useState({ min: NaN, max: NaN });
-    const [capacity, setCapacity] = useState(NaN);
+    const [duration, setDuration] = useState({
+        min: initialState.duration?.min || NaN,
+        max: initialState.duration?.max || NaN,
+    });
+    const [capacity, setCapacity] = useState(initialState.capacity || NaN);
+
+    const [categories, setCategories] = useState(initialState.categories);
 
     useEffect(() => {
         console.log('duration', duration);
@@ -73,18 +81,18 @@ function FilterBox({ changeFilters }: { changeFilters: Dispatch<TFilterAction> }
         return Object.keys(catsEnum).map(key => catsEnum[key])
     };
 
-    const categories = getMembers(Category);
+    const allCategories = getMembers(Category);
 
     function onCheckHandler(e: React.ChangeEvent<HTMLInputElement>) {
         if (e.target.checked) {
             changeFilters({
                 type: 'include_cat',
-                payload: categories[parseInt(e.target.id)]
+                payload: allCategories[parseInt(e.target.id)]
             });
         } else {
             changeFilters({
                 type: 'remove_cat',
-                payload: categories[parseInt(e.target.id)]
+                payload: allCategories[parseInt(e.target.id)]
             });
         }
     }
@@ -166,7 +174,7 @@ function FilterBox({ changeFilters }: { changeFilters: Dispatch<TFilterAction> }
                 <span> minutos.</span>
             </Box>
             <Box title="Categorias">
-                {categories.map((cat, idx) => (
+                {allCategories.map((cat, idx) => (
                     <label
                         className={styles.checkboxContainer}
                         key={idx}
@@ -175,6 +183,7 @@ function FilterBox({ changeFilters }: { changeFilters: Dispatch<TFilterAction> }
                             type="checkbox"
                             id={idx.toString()}
                             name={cat}
+                            checked={initialState.categories?.includes(cat)}
                             onChange={onCheckHandler}
                         />
                     </label>

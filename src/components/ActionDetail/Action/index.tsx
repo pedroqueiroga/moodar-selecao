@@ -8,9 +8,14 @@ import { useGlobalState } from '../../../store/ActionsStore';
 import styles from './Action.module.css';
 import buttonStyles from '../../Button.module.css'
 
-type ActionProp = { action: ActionModel };
+import { TReducerAction } from '../../ActionDetail';
 
-function Action({ action }: ActionProp) {
+type TProps = {
+    action: ActionModel,
+    canceledCallBack: React.Dispatch<TReducerAction>,
+};
+
+function Action({ action, canceledCallBack }: TProps) {
     const [state, dispatch] = useGlobalState();
 
     const isRequested = state.actions.some(id => id === action.id);
@@ -19,6 +24,7 @@ function Action({ action }: ActionProp) {
     const onClickHandler = () => {
         if (isRequested) {
             // cancel
+            canceledCallBack({ type: 'decrease' });
             dispatch({ actions: state.actions.delete(action.id) });
         } else {
             // request
