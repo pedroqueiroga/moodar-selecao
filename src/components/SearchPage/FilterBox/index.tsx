@@ -11,11 +11,11 @@ import styles from './FilterBox.module.css';
 import buttonStyles from '../../Button.module.css';
 
 export type TFilterState = {
-    capacity: number | undefined,
+    capacity: number,
     duration: {
-        min: number | undefined,
-        max: number | undefined
-    } | undefined,
+        min: number,
+        max: number
+    }
     categories: Set<string>
 };
 
@@ -25,8 +25,8 @@ export type TFilterAction =
     | { type: 'change_capacity', payload: number }
     | {
         type: 'change_duration', payload: {
-            min: number | undefined,
-            max: number | undefined
+            min: number,
+            max: number,
         }
     }
 
@@ -61,8 +61,6 @@ function FilterBox({ initialState, changeFilters }: {
         max: initialState.duration?.max || NaN,
     });
     const [capacity, setCapacity] = useState(initialState.capacity || NaN);
-
-    const [categories, setCategories] = useState(initialState.categories);
 
     useEffect(() => {
         console.log('duration', duration);
@@ -183,7 +181,7 @@ function FilterBox({ initialState, changeFilters }: {
                             type="checkbox"
                             id={idx.toString()}
                             name={cat}
-                            checked={initialState.categories?.includes(cat)}
+                            checked={Set.isSet(initialState.categories) && initialState.categories.includes(cat)}
                             onChange={onCheckHandler}
                         />
                     </label>

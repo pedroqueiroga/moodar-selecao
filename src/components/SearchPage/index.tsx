@@ -20,9 +20,9 @@ type TProps = { location: Location }
 function SearchPage({ location }: TProps) {
     let initialIndexState = 1;
     let initialFilterState: TFilterState = {
-        capacity: undefined,
-        duration: undefined,
-        categories: Set()
+        capacity: NaN,
+        duration: { min: NaN, max: NaN },
+        categories: Set<string>(),
     };
     let initialSortState: TOrderByReducerState = {
         sortAttr: 'name',
@@ -87,6 +87,12 @@ function SearchPage({ location }: TProps) {
         setResultState({ result, nEntries });
         setEndIndex(initialIndex + result.size - 1);
     }, [filterState, sortState, queries, initialIndex]);
+
+    useEffect(() => {
+        if (resultState.result.size === 0) {
+            setInitialIndex(1);
+        }
+    }, [resultState.result]);
 
     useEffect(() => {
         console.log('component did mount');
